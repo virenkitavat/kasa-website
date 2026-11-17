@@ -1,0 +1,216 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { site } from '../data/site';
+import { categories, faqs } from '../data/events';
+---
+<Base title="Contact" description="Enquire about hosting your event at Kasa Café, 150 New Cavendish Street, Fitzrovia." actionbar={false}>
+  <PageHero title="Tell us what you’re planning" lede="Share the date, the guest list and the idea. We’ll come back with availability and a quote, usually within a day." />
+
+  <section class="band band--tight" style="padding-top:0">
+    <div class="wrap contact">
+      <div>
+        <p class="form__status" data-status hidden tabindex="-1"></p>
+        <p class="contact__from" data-from hidden></p>
+        <!-- Where this form sends enquiries is set by `formEndpoint` in src/data/site.ts. -->
+        <form class="form" name="enquiry" method="POST" action={site.formEndpoint || `mailto:${site.email}`} enctype={site.formEndpoint ? undefined : 'text/plain'} data-form data-endpoint={site.formEndpoint} data-email={site.email} novalidate>
+          <input type="hidden" name="_subject" value="New event enquiry from the website" />
+          <input type="hidden" name="length" value="" />
+          <p class="sr"><label>Leave this empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+          <div class="form__pair">
+            <div class="field">
+              <label for="f-name">Your name</label>
+              <input id="f-name" name="name" autocomplete="name" required />
+              <span class="error">Enter your name so we know who to reply to.</span>
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" required />
+              <span class="error">Enter an email address we can reply to, like name@example.com.</span>
+            </div>
+          </div>
+          <div class="form__pair">
+            <div class="field">
+              <label for="f-phone">Phone <em>(optional)</em></label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" />
+            </div>
+            <div class="field">
+              <label for="f-type">Type of event</label>
+              <select id="f-type" name="type" required>
+                <option value="">Choose one</option>
+                {categories.map((c) => <option value={c.id}>{c.name}</option>)}
+                <option value="collaboration">Brand collaboration</option>
+                <option value="other">Something else</option>
+              </select>
+              <span class="error">Choose the closest type. “Something else” is fine.</span>
+            </div>
+          </div>
+          <div class="form__pair">
+            <div class="field">
+              <label for="f-date">Preferred date <em>(optional)</em></label>
+              <input id="f-date" name="date" type="date" />
+            </div>
+            <div class="field">
+              <label for="f-guests">Guests <em>(optional, up to {site.capacity.standing})</em></label>
+              <input id="f-guests" name="guests" type="number" min="1" max={site.capacity.standing} inputmode="numeric" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-hire">How private? <em>(optional)</em></label>
+            <select id="f-hire" name="hire">
+              <option value="">Not sure yet</option>
+              <option value="semi">Semi-private: the coffee bar stays open</option>
+              <option value="private">Private: the whole café</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-message">Your idea</label>
+            <textarea id="f-message" name="message" required></textarea>
+            <span class="error">Tell us a little about the event, even a sentence.</span>
+          </div>
+          <div>
+            <button class="btn btn--primary" type="submit" data-submit>Send enquiry</button>
+          </div>
+          <p class="muted" style="font-size:var(--t-small)">We only use your details to reply. See our <a class="link" href="/privacy">privacy page</a>.</p>
+        </form>
+      </div>
+
+      <aside class="contact__side">
+        <Placeholder label="Map of 150 New Cavendish Street" kind="Map" size="Static map image, 1200 × 900" tone="mist" ratio="4 / 3" />
+        <dl>
+          <div>
+            <dt>Find us</dt>
+            <dd>{site.address.street}<br />{site.address.area}, {site.address.city}<br /><a class="link" href={site.address.mapsUrl} target="_blank" rel="noopener">Open in Google Maps</a></dd>
+          </div>
+          <div>
+            <dt>Talk to us</dt>
+            <dd><a class="link" href={`mailto:${site.email}`}>{site.email}</a><br /><a class="link" href={site.instagram.url} target="_blank" rel="noopener">{site.instagram.handle} on Instagram</a></dd>
+          </div>
+          <div>
+            <dt>Café hours</dt>
+            <dd>
+              <ul class="hours">{site.hours.map((h) => <li><span>{h.days}</span><span>{h.time}</span></li>)}</ul>
+            </dd>
+          </div>
+          <div>
+            <dt>Event hours</dt>
+            <dd>{site.eventHours}</dd>
+          </div>
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  <section class="band band--cream" id="faq">
+    <div class="wrap faq-wrap">
+      <h2 class="t-xl rise">Good to know before you book</h2>
+      <div>
+        <div class="faq">
+          {faqs.map((f) => (<details><summary>{f.q}</summary><p>{f.a}</p></details>))}
+        </div>
+        <p class="muted" style="margin-top:1.5rem;font-size:var(--t-small)">By booking, you agree to these terms. Questions? <a class="link" href={`mailto:${site.email}`}>Email us</a>.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style is:global>
+  .contact { display: grid; gap: 3.5rem; }
+  @media (min-width: 64rem) { .contact { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 6rem; } }
+  .contact__from { margin-bottom: 1.5rem; padding: 0.9rem 1.1rem; border-radius: var(--r-sm); background: var(--mist); max-width: none; }
+  .contact__side { display: grid; gap: 2rem; align-content: start; }
+  .contact__side dl { margin: 0; display: grid; gap: 1.5rem; }
+  .contact__side dt { font-family: var(--label); letter-spacing: 0.04em; color: var(--terracotta-deep); margin-bottom: 0.25rem; }
+  .contact__side dd { margin: 0; }
+  .hours li { display: flex; justify-content: space-between; gap: 1.5rem; max-width: 22rem; }
+  .faq-wrap { display: grid; gap: 2.5rem; }
+  @media (min-width: 64rem) { .faq-wrap { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 5rem; } .faq-wrap h2 { position: sticky; top: 7rem; align-self: start; } }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-form]');
+  const status = document.querySelector<HTMLElement>('[data-status]');
+  const from = document.querySelector<HTMLElement>('[data-from]');
+  const params = new URLSearchParams(location.search);
+  const email = form?.dataset.email || '';
+  const endpoint = form?.dataset.endpoint || '';
+
+  function say(text: string, error = false) {
+    if (!status) return;
+    status.textContent = text;
+    status.classList.toggle('is-error', error);
+    status.hidden = false;
+    status.focus();
+  }
+
+  // Arriving back here after a no-JavaScript submit.
+  if (params.get('sent')) say('Enquiry sent. We’ll reply by email, usually within a day.');
+
+  // Carry choices over from the estimator or an event card.
+  if (form) {
+    const set = (name: string, value: string | null) => {
+      const el = form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | null;
+      if (el && value) el.value = value;
+    };
+    set('type', params.get('type'));
+    set('guests', params.get('guests'));
+    set('hire', params.get('length') === 'evening' ? 'private' : params.get('hire'));
+    set('length', params.get('length'));
+    const lengths: Record<string, string> = { '2h': '2 hours', half: 'half a day', full: 'a full day', evening: 'an evening, after closing' };
+    const len = lengths[params.get('length') || ''];
+    if (from && len && params.get('guests')) {
+      from.textContent = `From your estimate: ${params.get('guests')} guests for ${len}. Add your name and a date and we’ll confirm the price.`;
+      from.hidden = false;
+    }
+  }
+
+  function check(field: HTMLElement) {
+    const input = field.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('input, select, textarea');
+    if (!input) return true;
+    const ok = input.checkValidity();
+    field.classList.toggle('is-invalid', !ok);
+    input.setAttribute('aria-invalid', String(!ok));
+    return ok;
+  }
+
+  form?.querySelectorAll<HTMLElement>('.field').forEach((field) => {
+    // Clear an error as it is corrected. (Not on leaving the field: that moved the
+    // Send button just as it was being pressed, and the press was lost.)
+    field.addEventListener('input', () => { if (field.classList.contains('is-invalid')) check(field); });
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fields = [...form.querySelectorAll<HTMLElement>('.field')];
+    const bad = fields.filter((f) => !check(f));
+    if (bad.length) { bad[0].querySelector<HTMLElement>('input, select, textarea')?.focus(); return; }
+
+    const btn = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const data = new FormData(form);
+
+    // No form service set up yet: write the enquiry into an email instead.
+    if (!endpoint) {
+      const labels: Record<string, string> = { name: 'Name', email: 'Email', phone: 'Phone', type: 'Type of event', date: 'Preferred date', guests: 'Guests', hire: 'How private', length: 'Length', message: 'Idea' };
+      const lines = Object.entries(labels).map(([k, l]) => [l, String(data.get(k) || '').trim()]).filter(([, v]) => v).map(([l, v]) => `${l}: ${v}`);
+      location.href = `mailto:${email}?subject=${encodeURIComponent('Event enquiry from ' + data.get('name'))}&body=${encodeURIComponent(lines.join('\n'))}`;
+      say(`Your email app should now open with your enquiry written out. Press send there. If nothing opened, email us at ${email}.`);
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending enquiry…';
+    try {
+      const res = await fetch(endpoint, { method: 'POST', headers: { Accept: 'application/json' }, body: data });
+      if (!res.ok) throw new Error(String(res.status));
+      form.reset();
+      form.hidden = true;
+      if (from) from.hidden = true;
+      say('Enquiry sent. We’ll reply by email, usually within a day.');
+    } catch {
+      say(`Your enquiry wasn’t sent. Check your connection and try again, or email ${email}.`, true);
+      btn.disabled = false;
+      btn.textContent = 'Send enquiry';
+    }
+  });
+</script>

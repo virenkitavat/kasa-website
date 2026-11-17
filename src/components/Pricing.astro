@@ -1,0 +1,56 @@
+---
+import { perPerson, hourly, flat, included, extras, formatPrice } from '../data/pricing';
+---
+<div class="pricing">
+  <div>
+    <h3>{perPerson.title}</h3>
+    <p class="muted">{perPerson.note}</p>
+    <ul class="ladder">
+      {perPerson.tiers.map((t) => (
+        <li>
+          <span class="price">{formatPrice(t.price)}</span>
+          <span>{t.includes}{t.detail && <small>{t.detail}</small>}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+  <div class="pricing__side">
+    <div class="rate">
+      <h3>{hourly.title}</h3>
+      <ul>
+        {hourly.options.map((o) => (
+          <li>
+            <span class="price">{formatPrice(o.price)} <span>an hour</span></span>
+            <strong>{o.name}. {o.when}.</strong>
+            <span class="muted">{o.detail}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="rate">
+      <h3>{flat.title}</h3>
+      <p class="muted">{flat.note}</p>
+      <ul>
+        {flat.options.map((o) => (
+          <li>
+            <span class="price">{formatPrice(o.price)}</span>
+            <strong>{o.name}</strong>
+            <span class="muted">{o.detail}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <p><span class="vat">All prices include VAT</span></p>
+  </div>
+</div>
+<ul class="included" aria-label="Every package includes">
+  {included.map((i) => <li>{i}</li>)}
+</ul>
+<div class="notes">
+  {extras.map((e) => (
+    <div>
+      <h3>{e.title}</h3>
+      <p>{e.text}</p>
+    </div>
+  ))}
+</div>

@@ -1,0 +1,19 @@
+---
+// A stand-in for a photo, video or logo you will add later.
+// It names the asset it is waiting for and the size to supply.
+interface Props {
+  label: string;
+  size?: string;
+  ratio?: string;
+  shape?: 'rounded' | 'arch' | 'circle';
+  tone?: 'cream' | 'mist' | 'sage' | 'terracotta' | 'brown' | 'paper';
+  kind?: 'Photo' | 'Video' | 'Logo' | 'Map';
+  class?: string;
+}
+const { label, size, ratio = '4 / 5', shape = 'rounded', tone = 'cream', kind = 'Photo', class: cls = '' } = Astro.props;
+const [rw, rh] = ratio.split('/').map((n) => Number(n.trim()));
+const arch = shape === 'arch' ? `;--arch:${((rw / (2 * rh)) * 100).toFixed(2)}%` : '';
+---
+<div class:list={['ph', `ph--${tone}`, shape !== 'rounded' && `ph--${shape}`, cls]} style={`aspect-ratio:${ratio}${arch}`} role="img" aria-label={`${kind} placeholder: ${label}`}>
+  <p class="ph__note"><strong>{kind}: {label}</strong>{size && <span>{size}</span>}</p>
+</div>

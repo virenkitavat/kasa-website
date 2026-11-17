@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+---
+<!-- DRAFT: please review this page (or have it reviewed) before the site goes live. -->
+<Base title="Privacy" description="How Kasa Café uses the details you send through our enquiry form.">
+  <PageHero title="Privacy" lede="What we do with the details you send us." />
+  <section class="band band--tight" style="padding-top:0">
+    <div class="wrap"><div class="prose">
+      <h2>What we collect</h2>
+      <p>When you send an enquiry we collect what you type into the form: your name, email address, phone number if you give one, and the details of your event.</p>
+      <h2>Why we collect it</h2>
+      <p>To reply to your enquiry and, if you go ahead, to arrange your booking. We don’t use it for marketing and we don’t sell or share it with anyone else, apart from the services that deliver the form to our inbox and host this website.</p>
+      <h2>How long we keep it</h2>
+      <p>For as long as we need to handle your enquiry or booking, and for our accounting records where a booking is made.</p>
+      <h2>Cookies and tracking</h2>
+      <p>This website doesn’t use tracking or advertising cookies.</p>
+      <h2>Your rights</h2>
+      <p>You can ask to see, correct or delete the details we hold about you at any time. Email <a class="link" href={`mailto:${site.email}`}>{site.email}</a>. You also have the right to complain to the Information Commissioner’s Office (ico.org.uk).</p>
+      <h2>Who we are</h2>
+      <p>{site.name}, {site.address.street}, {site.address.area}, {site.address.city}.</p>
+    </div></div>
+  </section>
+</Base>
+<style is:global>
+  .prose { max-width: 46rem; }
+  .prose h2 { font-size: var(--t-md); margin: 2.5rem 0 0.6rem; }
+  .prose h2:first-child { margin-top: 0; }
+</style>

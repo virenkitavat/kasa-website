@@ -1,0 +1,125 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Placeholder from '../components/Placeholder.astro';
+import Closing from '../components/Closing.astro';
+import { formats, categories, collaborations } from '../data/events';
+import { pastEvents, showPlaceholders } from '../data/proof';
+
+const cat = (id: string) => categories.find((c) => c.id === id)!;
+const fmt = (id: string) => formats.find((f) => f.id === id);
+const showPast = pastEvents.ready || showPlaceholders;
+---
+<Base title="Events" description="Sip and paint, run clubs, supper clubs, DJ nights, celebrations and pop-ups: the events Kasa Café hosts in Fitzrovia.">
+  <PageHero title="Our events at Kasa" lede="Work meetings, engagement parties, workshops, book clubs, product launches, supper clubs, wine tastings, run clubs and DJ nights. Whatever yours needs, we’re here to make it happen." />
+
+  <section class="band band--tight" style="padding-top:0">
+    <div class="wrap">
+      <div class="chips" role="group" aria-label="Filter events by type" data-filter>
+        <button class="chip" type="button" aria-pressed="true" data-cat="all">All events</button>
+        {categories.map((c) => <button class="chip" type="button" aria-pressed="false" data-cat={c.id}>{c.name}</button>)}
+      </div>
+      <ul class="ev-grid" data-grid>
+        {formats.map((f) => (
+          <li class="card" data-cat={f.category}>
+            <Placeholder label={f.name} size="1200 × 1200" ratio="1 / 1" tone="cream" />
+            <div class:list={['card__bar', `card__bar--${cat(f.category).tone}`]}>{f.name}</div>
+            <div class="card__body">
+              <p>{f.text}</p>
+              <p><a class="link" href={`/contact?type=${f.category}`}>Host something like this</a></p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p class="ev-empty" data-empty hidden>Nothing in this category yet. <a class="link" href="/contact">Tell us your idea</a> and be the first.</p>
+    </div>
+  </section>
+
+  {showPast && (
+    <section class="band band--paper">
+      <div class="wrap">
+        <div class="band-head">
+          <h2 class="t-xl rise">Recently at Kasa</h2>
+          <p class="lede">A few of the events we’ve hosted lately.</p>
+        </div>
+        {!pastEvents.ready && <p class="preview-note">Preview only. These are placeholders and stay hidden on the live site until you add real events in <code>src/data/proof.ts</code>.</p>}
+        <ul class="past">
+          {pastEvents.items.map((e, i) => (
+            <li>
+              <Placeholder label={`${fmt(e.format)?.name ?? 'Event'} photo`} size="1200 × 1500" shape={i % 3 === 0 ? 'arch' : 'rounded'} tone={['cream', 'mist', 'sage'][i % 3] as any} ratio="4 / 5" />
+              <h3>{e.title}</h3>
+              <p class="tag">{fmt(e.format)?.name}, {e.date}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <section class="band band--mist" id="collaborate">
+    <div class="wrap collab">
+      <div>
+        <h2 class="t-xl rise">Collaborate with us</h2>
+        <p class="lede" style="margin-top:1.75rem">Your event at Kasa doesn’t have to end with the guest list. Brands can stay visible in the café after the last guest leaves.</p>
+        <ul class="collab__list">
+          {collaborations.map((c) => (<li><h3>{c.name}</h3><p>{c.text}</p></li>))}
+        </ul>
+        <p>Want something more bespoke? We’re always up for brand moments that feel natural in the room.</p>
+        <p style="margin-top:1.5rem"><a class="btn btn--ink" href="/contact?type=collaboration">Plan a collaboration</a></p>
+      </div>
+      <div class="collab__media">
+        <Placeholder label="Branded cup sticker" size="1200 × 1500" shape="arch" tone="paper" ratio="4 / 5" />
+        <Placeholder label="Mirror peel-off" size="1200 × 1200" shape="circle" tone="terracotta" ratio="1 / 1" />
+        <Placeholder label="Standee at the entrance" size="1600 × 1200" tone="sage" ratio="4 / 3" />
+      </div>
+    </div>
+  </section>
+
+  <Closing heading="Host something like this." tone="cream" />
+</Base>
+
+<style is:global>
+  .ev-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(0.75rem, 2vw, 1.5rem); margin-top: 2rem; }
+  @media (min-width: 48rem) { .ev-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 80rem) { .ev-grid { grid-template-columns: repeat(5, 1fr); } }
+  .ev-grid .card { box-shadow: var(--shadow); }
+  .ev-grid .card[hidden] { display: none; }
+  .ev-grid .card { animation: card-in 0.4s var(--ease); }
+  @keyframes card-in { from { opacity: 0; transform: scale(0.97); } }
+  .ev-empty { margin-top: 2rem; }
+  @media (max-width: 30rem) { .ev-grid .card__bar { font-size: 1rem; padding: 0.6rem 0.8rem; } .ev-grid .card__body { padding: 0.75rem 0.8rem 1rem; } }
+
+  .preview-note { max-width: none; margin-bottom: 1.5rem; padding: 0.75rem 1rem; border: 1.5px dashed var(--brown); border-radius: var(--r-sm); font-size: var(--t-small); color: var(--ink-soft); }
+  .past { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem clamp(0.75rem, 2vw, 1.5rem); }
+  @media (min-width: 64rem) { .past { grid-template-columns: repeat(3, 1fr); gap: 3rem 2rem; } }
+  .past h3 { font-size: var(--t-md); margin: 1rem 0 0.25rem; }
+  .past .tag { color: var(--terracotta-deep); }
+
+  .collab { display: grid; gap: 3rem; }
+  .collab__list { margin: 2.5rem 0; border-top: 1.5px solid var(--ink); }
+  .collab__list li { padding: 1.25rem 0; border-bottom: 1px solid var(--line); }
+  .collab__list h3 { font-size: var(--t-md); margin-bottom: 0.35rem; }
+  .collab__media { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: end; align-content: start; }
+  .collab__media .ph:last-child { grid-column: 1 / -1; }
+  @media (min-width: 64rem) { .collab { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 5rem; } }
+</style>
+
+<script>
+  const filter = document.querySelector('[data-filter]');
+  const cards = [...document.querySelectorAll<HTMLElement>('[data-grid] .card')];
+  const empty = document.querySelector<HTMLElement>('[data-empty]');
+  function apply(cat: string) {
+    let shown = 0;
+    cards.forEach((c) => { const on = cat === 'all' || c.dataset.cat === cat; c.hidden = !on; if (on) shown++; });
+    filter?.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cat === cat)));
+    if (empty) empty.hidden = shown > 0;
+  }
+  filter?.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest('button');
+    if (!b) return;
+    apply(b.dataset.cat!);
+    history.replaceState(null, '', b.dataset.cat === 'all' ? location.pathname : `?category=${b.dataset.cat}`);
+  });
+  const wanted = new URLSearchParams(location.search).get('category');
+  if (wanted && cards.some((c) => c.dataset.cat === wanted)) apply(wanted);
+</script>

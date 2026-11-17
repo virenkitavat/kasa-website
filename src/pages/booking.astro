@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+import { bookingSteps } from '../data/events';
+---
+<!--
+  BOOKING PAGE PLACEHOLDER
+  Every "Book an event" button on the site points here.
+  Replace everything between the PageHero and the end of the file
+  with your booking tool when it is ready.
+-->
+<Base title="Book an event" description="Book Kasa Café in Fitzrovia for your event." actionbar={false}>
+  <PageHero title="Book an event" lede="Online booking opens here soon. Until then, send us your date and we’ll confirm availability, usually within a day." >
+    <div class="btn-row" style="margin-top:2rem">
+      <a class="btn btn--primary" href="/contact">Send an enquiry</a>
+      <a class="btn" href={`mailto:${site.email}`}>{site.email}</a>
+    </div>
+  </PageHero>
+  <section class="band band--cream">
+    <div class="wrap">
+      <ol class="steps">
+        {bookingSteps.map((s) => (<li><h3>{s.title}</h3><p>{s.text}</p></li>))}
+      </ol>
+    </div>
+  </section>
+</Base>

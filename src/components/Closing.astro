@@ -1,0 +1,22 @@
+---
+import { site } from '../data/site';
+interface Props { heading?: string; text?: string; tone?: 'terracotta' | 'mist' | 'cream'; }
+const {
+  heading = 'Got something in mind? We’d love to hear it.',
+  text = 'Tell us the date, the guest list and the idea. We reply with availability and a quote.',
+  tone = 'terracotta',
+} = Astro.props;
+---
+<section class:list={['band', `band--${tone}`, 'closing']}>
+  <div class="wrap">
+    <h2 class="rise">{heading}</h2>
+    <div class="closing__row">
+      <p class="lede">{text}</p>
+      <div class="btn-row">
+        <a class="btn btn--ink" href="/booking">Book an event</a>
+        <a class="btn" href="/contact">Send an enquiry</a>
+        <a class="btn" href={`mailto:${site.email}`}>Email us</a>
+      </div>
+    </div>
+  </div>
+</section>

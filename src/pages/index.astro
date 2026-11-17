@@ -1,0 +1,488 @@
+---
+import Base from '../layouts/Base.astro';
+import Placeholder from '../components/Placeholder.astro';
+import Pricing from '../components/Pricing.astro';
+import Closing from '../components/Closing.astro';
+import { site } from '../data/site';
+import { zones, formats, categories, bookingSteps } from '../data/events';
+import { perPerson, hourly, flat } from '../data/pricing';
+import { testimonials, logos, showPlaceholders } from '../data/proof';
+
+const catName = (id: string) => categories.find((c) => c.id === id)?.name ?? '';
+const catTone = (id: string) => categories.find((c) => c.id === id)?.tone ?? 'terracotta';
+const zoneLooks = [
+  { shape: 'arch', tone: 'cream' },
+  { shape: 'circle', tone: 'sage' },
+  { shape: 'rounded', tone: 'mist' },
+  { shape: 'arch', tone: 'terracotta' },
+  { shape: 'rounded', tone: 'cream' },
+  { shape: 'circle', tone: 'mist' },
+] as const;
+const marquee = formats.map((f) => f.name);
+const showQuotes = testimonials.ready || showPlaceholders;
+const showLogos = logos.ready || showPlaceholders;
+const pricingData = {
+  perPerson: perPerson.tiers.map((t) => t.price),
+  semi: hourly.options[0].price,
+  private: hourly.options[1].price,
+  half: flat.options[0].price,
+  full: flat.options[1].price,
+  seated: site.capacity.seated,
+};
+---
+<Base>
+  <!-- 1. Discover -->
+  <section class="hero">
+    <div class="wrap hero__in">
+      <h1 class="hero__title t-hero">
+        <span class="hero__line"><span>The café</span></span>
+        <span class="hero__line"><span>you can</span></span>
+        <span class="hero__line"><span>book.</span></span>
+      </h1>
+      <div class="hero__copy">
+        <p class="lede">Kasa is a specialty café in Fitzrovia that becomes your venue. Birthdays, workshops, supper clubs, run clubs, launches and nights with a DJ all happen here.</p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="/booking" data-magnet>Book an event</a>
+          <a class="btn" href="#space">See the space</a>
+        </div>
+      </div>
+      <div class="hero__media" data-hero-media>
+        <Placeholder label="Hero film or photo of an event in full swing" size="Portrait, 1600 × 2200. Video: 10–20s, muted loop" kind="Video" shape="arch" tone="terracotta" ratio="8 / 11" />
+      </div>
+      <dl class="hero__facts">
+        <div><dt>Where</dt><dd>{site.address.street}, {site.address.area}</dd></div>
+        <div><dt>Room for</dt><dd>{site.capacity.seated} seated, {site.capacity.standing} standing</dd></div>
+        <div><dt>Prices</dt><dd>From £6 a person</dd></div>
+        <div><dt>Event hours</dt><dd>7am to 11pm, every day</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      {[0, 1].map(() => marquee.map((m) => <span>{m}</span>))}
+    </div>
+  </div>
+
+  <!-- 2. The space -->
+  <section class="band space" id="space">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 class="t-xl rise">Thirty seated. Fifty standing.</h2>
+        <div>
+          <p class="lede">A dining table, plush sofas and eight round tables, in a room that is styled before you arrive.</p>
+          <p class="muted">Hire it semi-private, with the coffee bar still serving at the front, or take the whole café for yourself.</p>
+        </div>
+      </div>
+    </div>
+    <div class="tour" data-tour>
+      <ul class="tour__track" data-tour-track>
+        {zones.map((z, i) => (
+          <li class="zone">
+            <Placeholder label={z.name} size="1200 × 1500" shape={zoneLooks[i].shape} tone={zoneLooks[i].tone} ratio={zoneLooks[i].shape === 'circle' ? '1 / 1' : '4 / 5'} />
+            <h3 class="t-md">{z.name}</h3>
+            <p>{z.text}</p>
+          </li>
+        ))}
+      </ul>
+      <div class="wrap"><div class="tour__bar" aria-hidden="true"><i data-tour-bar></i></div></div>
+    </div>
+  </section>
+
+  <!-- 3. What happens here -->
+  <section class="band band--cream">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 class="t-xl rise">What happens here</h2>
+        <p class="lede">We’ve hosted them all. Pick one to see how it fits the room.</p>
+      </div>
+      <div class="formats" data-formats>
+        <ul class="formats__list">
+          {formats.map((f, i) => (
+            <li class:list={['format', i === 0 && 'is-active']} data-format>
+              <button class="format__btn" type="button" aria-expanded={i === 0 ? 'true' : 'false'}>
+                <span class="format__name">{f.name}</span>
+                <span class="tag format__cat">{catName(f.category)}</span>
+              </button>
+              <div class="format__detail">
+                <div class="card">
+                  <Placeholder label={f.name} size="1200 × 1200" ratio="1 / 1" tone="paper" />
+                  <div class:list={['card__bar', `card__bar--${catTone(f.category)}`]}>{f.name}</div>
+                </div>
+                <p>{f.text}</p>
+                <a class="link" href={`/events?category=${f.category}`}>See {catName(f.category).toLowerCase()} at Kasa</a>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Imagine yours -->
+  <section class="band band--mist" id="imagine">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 class="t-xl rise">Imagine yours</h2>
+        <p class="lede">Four choices, and you’ll see what your event could cost before you send us a word.</p>
+      </div>
+      <form class="est" data-est action="/contact" method="get">
+        <div class="est__controls">
+          <fieldset>
+            <legend>What are you planning?</legend>
+            <div class="chips">
+              {categories.map((c, i) => (
+                <label><input class="chip-input" type="radio" name="type" value={c.id} checked={i === 0} /><span class="chip">{c.name}</span></label>
+              ))}
+              <label><input class="chip-input" type="radio" name="type" value="other" /><span class="chip">Something else</span></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend><label for="est-guests">How many guests?</label></legend>
+            <div class="est__guests">
+              <output class="est__count" for="est-guests" data-est-count>20</output>
+              <input id="est-guests" type="range" name="guests" min="2" max={site.capacity.standing} value="20" />
+            </div>
+            <p class="est__hint" data-est-hint>Everyone gets a seat.</p>
+          </fieldset>
+          <fieldset>
+            <legend>How private?</legend>
+            <div class="chips">
+              <label><input class="chip-input" type="radio" name="hire" value="semi" checked /><span class="chip">Semi-private</span></label>
+              <label><input class="chip-input" type="radio" name="hire" value="private" /><span class="chip">Private</span></label>
+            </div>
+            <p class="est__hint" data-est-hire>The coffee bar at the front keeps serving takeaway.</p>
+          </fieldset>
+          <fieldset>
+            <legend>How long?</legend>
+            <div class="chips">
+              <label><input class="chip-input" type="radio" name="length" value="2h" checked /><span class="chip">2 hours</span></label>
+              <label><input class="chip-input" type="radio" name="length" value="half" /><span class="chip">Half day</span></label>
+              <label><input class="chip-input" type="radio" name="length" value="full" /><span class="chip">Full day</span></label>
+              <label><input class="chip-input" type="radio" name="length" value="evening" /><span class="chip">Evening, after closing</span></label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="est__result">
+          <h3 class="t-md">Your options</h3>
+          <ul class="est__options" data-est-out aria-live="polite">
+            <li><span class="est__name">Per person</span><span class="price est__price">from £120</span><span class="est__why">£6 each for the space, up to £22.50 each with a sandwich, drink and cookie.</span></li>
+          </ul>
+          <button class="btn btn--ink" type="submit">Enquire with these details</button>
+          <p class="est__small">An estimate, including VAT. We confirm the price when you enquire.</p>
+        </div>
+      </form>
+      <script type="application/json" id="pricing-data" set:html={JSON.stringify(pricingData)} />
+    </div>
+  </section>
+
+  <!-- 5. What we provide -->
+  <section class="band" id="pricing">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 class="t-xl rise">What we provide</h2>
+        <p class="lede">Three ways to pay, depending on the size and shape of your event. Baristas, your own music and somewhere to store your equipment come with all of them.</p>
+      </div>
+      <Pricing />
+    </div>
+  </section>
+
+  <!-- 6. Proof -->
+  <section class="band band--paper proof">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 class="t-xl rise">One room, many lives</h2>
+        <p class="lede">A studio on Saturday morning, a dinner party that night, a start line on Sunday.</p>
+      </div>
+      <div class="mosaic">
+        <Placeholder label="Sip and paint in progress" size="1200 × 1500" shape="arch" tone="cream" ratio="4 / 5" />
+        <Placeholder label="Run club outside the café" size="1600 × 1200" tone="sage" ratio="4 / 3" />
+        <Placeholder label="A celebration at the dining table" size="1200 × 1200" shape="circle" tone="terracotta" ratio="1 / 1" />
+        <Placeholder label="DJ night" size="1600 × 1200" tone="mist" ratio="4 / 3" />
+        <Placeholder label="Supper club plates" size="1200 × 1500" shape="arch" tone="brown" ratio="4 / 5" />
+      </div>
+
+      {showQuotes && (
+        <div class="quotes">
+          {!testimonials.ready && <p class="preview-note">Preview only. These quotes are placeholders and stay hidden on the live site until you add real ones in <code>src/data/proof.ts</code>.</p>}
+          <ul>
+            {testimonials.items.map((t) => (
+              <li>
+                <blockquote>“{t.quote}”</blockquote>
+                <p class="tag">{t.name}, {t.event}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {showLogos && (
+        <div class="logos">
+          <p class="tag">Brands we’ve hosted</p>
+          <ul>
+            {logos.items.map((l) => <li><Placeholder label={l} kind="Logo" ratio="5 / 2" tone="cream" /></li>)}
+          </ul>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- 7. Enquire -->
+  <section class="band band--cream">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 class="t-xl rise">How to book</h2>
+        <p class="lede">Whether it’s a casual get-together or a special celebration, it takes three steps.</p>
+      </div>
+      <ol class="steps">
+        {bookingSteps.map((s) => (
+          <li>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <Closing />
+</Base>
+
+<style is:global>
+  /* ----- Hero ----- */
+  .hero { padding-block: clamp(1.5rem, 4vw, 3.5rem) clamp(2.5rem, 5vw, 4rem); }
+  .hero__in { display: grid; gap: clamp(1.75rem, 4vw, 3rem); }
+  .hero__title { font-variation-settings: 'SOFT' 100, 'WONK' 1; }
+  .hero__line { display: block; overflow: hidden; padding-bottom: 0.14em; margin-bottom: -0.14em; }
+  .hero__line > span { display: block; }
+  .hero__copy { display: grid; gap: 1.75rem; align-content: start; }
+  .hero__media { max-width: 26rem; justify-self: center; width: 100%; }
+  @media (max-width: 47.99rem) { .hero__title { font-size: clamp(4rem, 18.5vw, 9rem); } }
+  .hero__facts { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem 1.5rem; margin: 0; padding-top: 1.5rem; border-top: 1.5px solid var(--ink); }
+  .hero__facts dt { font-family: var(--label); font-size: 0.9375rem; letter-spacing: 0.04em; color: var(--terracotta-deep); }
+  .hero__facts dd { margin: 0.15rem 0 0; font-family: var(--display); font-size: clamp(1.1rem, 1.5vw, 1.4rem); line-height: 1.2; letter-spacing: -0.01em; }
+
+  @media (min-width: 48rem) {
+    .hero__in { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); grid-template-rows: auto 1fr auto; column-gap: clamp(2rem, 5vw, 5rem); }
+    .hero__title { grid-column: 1; grid-row: 1; }
+    .hero__copy { grid-column: 1; grid-row: 2; max-width: 38rem; }
+    .hero__media { grid-column: 2; grid-row: 1 / 3; max-width: none; align-self: end; }
+    .hero__facts { grid-column: 1 / -1; grid-row: 3; grid-template-columns: repeat(4, 1fr); }
+  }
+
+  /* Opening sequence: the headline rises, the arch opens, the copy follows. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__line > span { animation: hero-rise 1.1s var(--ease) both; }
+    .hero__line:nth-child(2) > span { animation-delay: 0.1s; }
+    .hero__line:nth-child(3) > span { animation-delay: 0.2s; }
+    .hero__media .ph { animation: hero-arch 1.4s var(--ease) 0.25s both; }
+    .hero__copy, .hero__facts { animation: hero-fade 0.9s ease 0.7s both; }
+  }
+  @keyframes hero-rise { from { transform: translateY(105%); } }
+  @keyframes hero-arch { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0); } }
+  @keyframes hero-fade { from { opacity: 0; } }
+
+  /* ----- Marquee of event names ----- */
+  .marquee { overflow: hidden; background: var(--terracotta); padding-block: clamp(1rem, 2vw, 1.75rem); }
+  .marquee__track { display: flex; width: max-content; animation: marquee 48s linear infinite; }
+  .marquee span { display: inline-flex; align-items: center; font-family: var(--display); font-style: italic; font-weight: 300; font-size: clamp(1.75rem, 4vw, 3.5rem); letter-spacing: -0.02em; white-space: nowrap; }
+  .marquee span::after { content: ''; width: 0.32em; height: 0.32em; border-radius: 50%; background: var(--ink); margin-inline: 0.7em; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .marquee__track { animation: none; } }
+
+  /* ----- Space tour ----- */
+  .space { padding-bottom: 0; overflow: hidden; }
+  .space .band-head { margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+  .tour { padding-bottom: var(--band); }
+  .tour__track { display: flex; gap: clamp(1.25rem, 3vw, 3.5rem); padding-inline: var(--gutter); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; align-items: flex-start; }
+  .tour__track::-webkit-scrollbar { display: none; }
+  .zone { flex: none; width: min(78vw, 22rem); scroll-snap-align: center; }
+  .zone .ph { margin-bottom: 1.25rem; }
+  .zone h3 { margin-bottom: 0.5rem; }
+  .zone p { color: var(--ink-soft); font-size: 1.0625rem; }
+  .tour__bar { display: none; }
+
+  @media (min-width: 64rem) {
+    .zone { width: auto; }
+    .zone .ph { width: auto; height: clamp(15rem, 50vh, 32rem); }
+    .zone h3, .zone p { max-width: 20rem; }
+    .zone:nth-child(even) { padding-top: clamp(2rem, 7vh, 5rem); }
+    .tour.is-pinned { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-block: 5.5rem 2rem; }
+    .tour.is-pinned .tour__track { overflow: visible; scroll-snap-type: none; width: max-content; will-change: transform; }
+    .tour.is-pinned .tour__bar { display: block; height: 1.5px; background: var(--line); margin-top: 2.5rem; }
+    .tour__bar i { display: block; height: 3px; margin-top: -1px; background: var(--ink); transform-origin: left; transform: scaleX(0); }
+  }
+
+  /* ----- Event formats index ----- */
+  .formats { position: relative; }
+  .formats__list { border-top: 1.5px solid var(--ink); }
+  .format { border-bottom: 1px solid var(--line); }
+  .format__btn { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; width: 100%; padding: clamp(0.8rem, 1.6vw, 1.2rem) 0; background: none; border: 0; text-align: left; cursor: pointer; }
+  .format__name { font-family: var(--display); font-weight: 300; font-size: clamp(1.75rem, 4.2vw, 3.75rem); letter-spacing: -0.035em; line-height: 1; transition: transform 0.4s var(--ease), color 0.3s; }
+  .format__cat { color: var(--ink-soft); white-space: nowrap; }
+  .format.is-active .format__name { color: var(--terracotta-deep); transform: translateX(0.35em); font-style: italic; }
+  .format__detail { display: none; padding-bottom: 1.75rem; }
+  .format.is-active .format__detail { display: grid; gap: 1rem; }
+  .format__detail .card { max-width: 24rem; box-shadow: var(--shadow); }
+  .format__detail .link { display: inline-flex; align-items: center; min-height: 2.75rem; justify-self: start; }
+  @media (max-width: 63.99rem) { .format__cat { display: none; } }
+  @media (min-width: 40rem) and (max-width: 63.99rem) {
+    .format.is-active .format__detail { grid-template-columns: 17rem 1fr; grid-template-rows: 1fr auto; column-gap: 2rem; align-items: end; }
+    .format__detail .card { grid-row: 1 / 3; align-self: start; }
+    .format__detail > p { align-self: end; }
+  }
+
+  @media (min-width: 64rem) {
+    .formats__list { width: 60%; }
+    .format__detail { position: absolute; top: 0; right: 0; width: 32%; padding: 0; }
+    .format__detail .card { max-width: none; }
+    .format.is-active .format__detail { animation: detail-in 0.45s var(--ease); }
+  }
+  @keyframes detail-in { from { opacity: 0; transform: translateY(1rem); } }
+
+  /* ----- Estimator ----- */
+  .est { display: grid; gap: clamp(2rem, 4vw, 4rem); }
+  .est fieldset { border: 0; margin: 0 0 2.25rem; padding: 0; min-width: 0; }
+  .est legend { padding: 0; margin-bottom: 0.9rem; font-family: var(--display); font-size: clamp(1.4rem, 2vw, 1.75rem); letter-spacing: -0.02em; }
+  .est__guests { display: flex; align-items: center; gap: 1.5rem; }
+  .est__count { font-family: var(--display); font-weight: 300; font-size: clamp(3.5rem, 7vw, 6rem); line-height: 0.9; letter-spacing: -0.04em; min-width: 1.3em; font-variant-numeric: tabular-nums; }
+  .est__guests input { flex: 1; accent-color: var(--ink); height: 2.75rem; }
+  .est__hint { margin-top: 0.75rem; color: var(--ink-soft); font-size: var(--t-small); }
+  .est__result { display: grid; gap: 1.25rem; align-content: start; padding: clamp(1.5rem, 3vw, 2.5rem); border-radius: var(--r-lg); background: var(--paper); box-shadow: var(--shadow); }
+  .est__options { display: grid; }
+  .est__options li { display: grid; grid-template-columns: 1fr auto; gap: 0.15rem 1rem; padding: 1.1rem 0; border-top: 1px solid var(--line); }
+  .est__options li:first-child { border-top: 1.5px solid var(--ink); }
+  .est__name { font-family: var(--label); font-size: 1.125rem; letter-spacing: 0.03em; align-self: end; }
+  .est__name em { font-style: normal; margin-left: 0.5rem; padding: 0.15rem 0.6rem; border-radius: 999px; background: var(--sage); font-size: 0.875rem; }
+  .est__price { font-size: clamp(1.75rem, 2.8vw, 2.5rem); line-height: 1; color: var(--terracotta-deep); text-align: right; }
+  .est__why { grid-column: 1 / -1; color: var(--ink-soft); font-size: var(--t-small); }
+  .est__small { font-size: var(--t-small); color: var(--ink-soft); }
+  @media (min-width: 64rem) {
+    .est { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: start; }
+    .est__result { position: sticky; top: 6.5rem; }
+  }
+
+  /* ----- Proof ----- */
+  .mosaic { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(0.75rem, 2vw, 1.5rem); align-items: end; }
+  .mosaic .ph:nth-child(3) { grid-column: 1 / -1; max-width: 60%; justify-self: center; }
+  @media (min-width: 40rem) and (max-width: 63.99rem) {
+    .mosaic { grid-template-columns: repeat(6, 1fr); align-items: center; }
+    .mosaic .ph { grid-column: span 2; }
+    .mosaic .ph:nth-child(3) { grid-column: span 2; max-width: none; }
+    .mosaic .ph:nth-child(4) { grid-column: 1 / span 4; }
+    .mosaic .ph:nth-child(5) { grid-column: span 2; }
+  }
+  @media (min-width: 64rem) {
+    .mosaic { grid-template-columns: 3fr 4fr 3fr 4fr 3fr; align-items: center; }
+    .mosaic .ph:nth-child(3) { grid-column: auto; max-width: none; }
+    .mosaic .ph:nth-child(even) { margin-top: 5rem; }
+  }
+  .preview-note { max-width: none; margin-bottom: 1.5rem; padding: 0.75rem 1rem; border: 1.5px dashed var(--brown); border-radius: var(--r-sm); font-size: var(--t-small); color: var(--ink-soft); }
+  .quotes { margin-top: clamp(3rem, 7vw, 6rem); }
+  .quotes ul { display: grid; gap: 2.5rem; }
+  .quotes blockquote { margin: 0 0 1rem; font-family: var(--display); font-style: italic; font-weight: 300; font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.25; letter-spacing: -0.015em; }
+  .quotes .tag { color: var(--terracotta-deep); }
+  @media (min-width: 64rem) { .quotes ul { grid-template-columns: repeat(3, 1fr); gap: 4rem; } }
+  .logos { margin-top: clamp(3rem, 6vw, 5rem); }
+  .logos ul { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1rem; }
+  @media (min-width: 64rem) { .logos ul { grid-template-columns: repeat(6, 1fr); } }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+  const mm = gsap.matchMedia();
+
+  // The hero arch drifts and grows a little as you scroll away from it.
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    gsap.to('[data-hero-media]', {
+      yPercent: -6, scale: 1.04, ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+    });
+  });
+
+  // On large screens the space tour pins and moves sideways as you scroll down.
+  mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
+    const tour = document.querySelector<HTMLElement>('[data-tour]');
+    const track = document.querySelector<HTMLElement>('[data-tour-track]');
+    const bar = document.querySelector<HTMLElement>('[data-tour-bar]');
+    if (!tour || !track) return;
+    tour.classList.add('is-pinned');
+    const dist = () => Math.max(0, track.scrollWidth - window.innerWidth);
+    const tween = gsap.to(track, {
+      x: () => -dist(), ease: 'none',
+      scrollTrigger: {
+        trigger: tour, start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 0.5, invalidateOnRefresh: true,
+        onUpdate: (self) => { if (bar) bar.style.transform = `scaleX(${self.progress})`; },
+      },
+    });
+    return () => { tween.scrollTrigger?.kill(); tween.kill(); gsap.set(track, { clearProps: 'all' }); tour.classList.remove('is-pinned'); };
+  });
+
+  // Event formats: hover or tap a name to see it.
+  const items = [...document.querySelectorAll<HTMLElement>('[data-format]')];
+  const hover = window.matchMedia('(hover: hover) and (min-width: 1024px)');
+  function activate(item: HTMLElement) {
+    items.forEach((i) => {
+      const on = i === item;
+      i.classList.toggle('is-active', on);
+      i.querySelector('button')?.setAttribute('aria-expanded', String(on));
+    });
+  }
+  items.forEach((item) => {
+    const btn = item.querySelector('button')!;
+    btn.addEventListener('click', () => activate(item));
+    btn.addEventListener('focus', () => activate(item));
+    item.addEventListener('pointerenter', () => { if (hover.matches) activate(item); });
+  });
+
+  // Estimator: reads prices from the page (which come from src/data/pricing.ts).
+  const est = document.querySelector<HTMLFormElement>('[data-est]');
+  const data = JSON.parse(document.getElementById('pricing-data')?.textContent || '{}');
+  const money = (n: number) => '£' + (Number.isInteger(n) ? n.toLocaleString('en-GB') : n.toFixed(2));
+  type Option = { name: string; price: string; total: number; why: string };
+
+  function update() {
+    if (!est) return;
+    const f = new FormData(est);
+    const guests = Number(f.get('guests'));
+    const length = String(f.get('length'));
+    const evening = length === 'evening';
+    const hire = evening ? 'private' : String(f.get('hire'));
+    const hours = { '2h': 2, half: 4, full: 9 }[length] ?? 0;
+    const options: Option[] = [];
+
+    if (!evening && length === '2h') {
+      const lo = data.perPerson[0], hi = data.perPerson[data.perPerson.length - 1];
+      options.push({ name: 'Per person', price: 'from ' + money(lo * guests), total: lo * guests,
+        why: `${money(lo)} each for the space, up to ${money(hi)} each with a sandwich, drink and cookie (${money(hi * guests)}).` });
+    }
+    if (evening) {
+      options.push({ name: 'By the hour, private', price: money(data.private) + ' an hour', total: data.private,
+        why: `After closing, the whole café is yours. Three hours would be ${money(data.private * 3)}.` });
+    } else {
+      const rate = hire === 'semi' ? data.semi : data.private;
+      options.push({ name: hire === 'semi' ? 'By the hour, semi-private' : 'By the hour, private', price: money(rate * hours), total: rate * hours,
+        why: `${money(rate)} an hour for ${hours} hours.` });
+      if (length === 'half') options.push({ name: 'Flat rate, half day', price: money(data.half), total: data.half, why: 'Four hours during café hours.' });
+      if (length === 'full') options.push({ name: 'Flat rate, full day', price: money(data.full), total: data.full, why: 'Up to nine hours during café hours.' });
+    }
+
+    const low = Math.min(...options.map((o) => o.total));
+    const out = est.querySelector('[data-est-out]')!;
+    out.innerHTML = options.map((o) =>
+      `<li><span class="est__name">${o.name}${options.length > 1 && o.total === low ? '<em>Lowest price</em>' : ''}</span><span class="price est__price">${o.price}</span><span class="est__why">${o.why}</span></li>`).join('');
+
+    est.querySelector('[data-est-count]')!.textContent = String(guests);
+    est.querySelector('[data-est-hint]')!.textContent = guests > data.seated
+      ? `We seat ${data.seated}, so with ${guests} guests some will be standing.`
+      : 'Everyone gets a seat.';
+    est.querySelector('[data-est-hire]')!.textContent = evening
+      ? 'After closing, hire is always private.'
+      : hire === 'semi' ? 'The coffee bar at the front keeps serving takeaway.' : 'The whole café, coffee bar included, is yours.';
+  }
+  est?.addEventListener('input', update);
+  update();
+</script>

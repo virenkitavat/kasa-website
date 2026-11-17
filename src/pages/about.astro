@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Placeholder from '../components/Placeholder.astro';
+import Closing from '../components/Closing.astro';
+const values = [
+  { name: 'Community', text: 'Regulars know each other here. Run clubs finish at our door and book clubs take over the sofas.' },
+  { name: 'Culture', text: 'Supper clubs, DJ sets, workshops and pop-ups. The room changes with whoever is hosting.' },
+  { name: 'Connection', text: 'Every guest is welcomed like family, whether they came for a flat white or a fiftieth.' },
+];
+---
+<Base title="About us" description="Kasa Café is a home away from home in the heart of Fitzrovia: a place for community, culture and connection.">
+  <PageHero title="Your home away from home" lede="Kasa is more than a space. It’s a place for community, culture and connection, in the heart of Fitzrovia." />
+
+  <section class="band band--tight" style="padding-top:0">
+    <div class="wrap story">
+      <div class="story__media">
+        <Placeholder label="The café front on New Cavendish Street" size="1200 × 1650" shape="arch" tone="cream" ratio="8 / 11" />
+      </div>
+      <div class="story__text">
+        <h2 class="t-lg rise">A space that feels like home</h2>
+        <p>Kasa is more than a coffee spot. Here, every cup is brewed with care and every guest is welcomed like family.</p>
+        <p>From expertly crafted speciality coffee to freshly baked pastries, sandwiches and cakes, every detail reflects our passion for quality and creativity.</p>
+        <p>Beyond the menu, Kasa is an experience: a warm and inviting space where culture, conversation and community come together.</p>
+        <p>That’s why we open the café up for events. A work meeting, an engagement party, a workshop, a book club, a product launch, a supper club, a wine tasting, a run club or a DJ night: we’ve hosted them all.</p>
+        <p><a class="btn btn--primary" href="/booking" style="margin-top:1rem">Book an event</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--mist">
+    <div class="wrap">
+      <ul class="values">
+        {values.map((v) => (<li><h2 class="t-xl rise">{v.name}</h2><p>{v.text}</p></li>))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 class="t-xl rise">The people behind the bar</h2>
+        <p class="lede">The team who pull your coffee are the same people who’ll help run your event.</p>
+      </div>
+      <!-- TEAM: replace the labels with real names and roles when you add photos. -->
+      <ul class="team">
+        {['Team member', 'Team member', 'Team member', 'Team member'].map((t, i) => (
+          <li>
+            <Placeholder label={t} size="1000 × 1000" shape="circle" tone={['cream', 'sage', 'mist', 'terracotta'][i] as any} ratio="1 / 1" />
+            <h3>Name</h3>
+            <p class="muted">Role</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Closing tone="terracotta" />
+</Base>
+
+<style is:global>
+  .story { display: grid; gap: 2.5rem; }
+  .story__media { max-width: 24rem; }
+  .story__text h2 { margin-bottom: 1.75rem; }
+  @media (min-width: 64rem) { .story { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 6rem; align-items: start; } .story__media { max-width: none; position: sticky; top: 7rem; } .story__text { padding-top: 3rem; } }
+  .values { display: grid; gap: 3rem; }
+  .values li { display: grid; gap: 1rem; padding-top: 1.5rem; border-top: 1.5px solid var(--ink); }
+  @media (min-width: 64rem) { .values li { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; gap: 4rem; } }
+  .team { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem 1.25rem; }
+  @media (min-width: 64rem) { .team { grid-template-columns: repeat(4, 1fr); gap: 2.5rem; } }
+  .team h3 { font-size: var(--t-md); margin-top: 1rem; }
+</style>

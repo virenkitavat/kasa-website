@@ -1,0 +1,131 @@
+---
+import '@fontsource-variable/fraunces/full.css';
+import '@fontsource-variable/fraunces/full-italic.css';
+import '@fontsource-variable/nunito-sans';
+import '@fontsource-variable/oswald';
+import '../styles/global.css';
+import { site, nav } from '../data/site';
+
+interface Props { title?: string; description?: string; actionbar?: boolean; }
+const { title, description = site.description, actionbar = true } = Astro.props;
+const pageTitle = title ? `${title} | ${site.name}` : `${site.name} | ${site.tagline}`;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'CafeOrCoffeeShop',
+  name: site.name,
+  description: site.description,
+  email: site.email,
+  address: { '@type': 'PostalAddress', streetAddress: site.address.street, addressLocality: site.address.city, addressCountry: 'GB' },
+  sameAs: [site.instagram.url],
+  openingHoursSpecification: [
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'], opens: '08:00', closes: '18:00' },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Friday', opens: '08:00', closes: '17:00' },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday', opens: '11:00', closes: '17:00' },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Sunday', opens: '11:00', closes: '16:00' },
+  ],
+};
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#f2eeea" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body class:list={[actionbar && 'has-actionbar']}>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="header" data-header>
+      <div class="wrap header__in">
+        <!-- LOGO: replace this text with your logo file when you have it. -->
+        <a class="logo" href="/" aria-label="Kasa Café, home">kasa café</a>
+        <nav class="nav" aria-label="Main">
+          {nav.slice(1).map((n) => <a href={n.href} aria-current={path === n.href ? 'page' : undefined}>{n.label}</a>)}
+        </nav>
+        <a class="btn btn--primary btn--small header__cta" href="/booking" data-magnet>Book an event</a>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="drawer" data-menu-btn>
+          <span data-menu-label>Menu</span><i aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+
+    <div class="drawer" id="drawer" data-drawer>
+      <nav aria-label="Mobile">
+        {nav.map((n) => <a class="drawer__link" href={n.href}>{n.label}</a>)}
+      </nav>
+      <div class="drawer__foot">
+        <a class="btn btn--ink" href="/booking">Book an event</a>
+        <span>{site.address.street}, {site.address.area}</span>
+      </div>
+    </div>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <div class="wrap">
+        <div class="footer__grid">
+          <div>
+            <h2>Find us</h2>
+            <ul>
+              <li>{site.address.street}</li>
+              <li>{site.address.area}, {site.address.city}</li>
+              <li><a href={site.address.mapsUrl} target="_blank" rel="noopener">Open in Google Maps</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2>Talk to us</h2>
+            <ul>
+              <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+              <li><a href={site.instagram.url} target="_blank" rel="noopener">{site.instagram.handle}</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2>Café hours</h2>
+            <ul class="footer__hours">
+              {site.hours.map((h) => <li><span>{h.days}</span><span>{h.time}</span></li>)}
+            </ul>
+            <p style="margin-top:.75rem">Events: {site.eventHours}</p>
+          </div>
+          <div>
+            <h2>Pages</h2>
+            <ul>
+              {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+              <li><a href="/booking">Book an event</a></li>
+            </ul>
+          </div>
+        </div>
+        <p class="footer__mark" aria-hidden="true">kasa</p>
+        <div class="footer__base">
+          <span>© {new Date().getFullYear()} Kasa Café</span>
+          <a href="/privacy">Privacy</a>
+        </div>
+      </div>
+    </footer>
+
+    {actionbar && (
+      <div class="actionbar" data-actionbar>
+        <a class="btn btn--primary" href="/booking">Book an event</a>
+        <a class="btn" href="/contact">Enquire</a>
+      </div>
+    )}
+
+    <script>
+      import '../scripts/site.ts';
+    </script>
+  </body>
+</html>

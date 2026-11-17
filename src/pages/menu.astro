@@ -1,0 +1,85 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Placeholder from '../components/Placeholder.astro';
+import Closing from '../components/Closing.astro';
+import { menu } from '../data/menu';
+import { formatPrice } from '../data/pricing';
+const money = (n: number) => '£' + n.toFixed(2);
+---
+<Base title="Menu" description="Speciality coffee, ceremonial matcha from Uji, focaccia sandwiches and pastries baked fresh at Kasa Café, Fitzrovia.">
+  <PageHero title="The Kasa menu" lede="Speciality coffee, ceremonial matcha, hot focaccia sandwiches and pastries baked fresh each day. All of it can be served at your event." />
+
+  <nav class="menu-nav" aria-label="Menu sections">
+    <div class="wrap">
+      <ul class="chips">
+        {menu.map((s) => <li><a class="chip" href={`#${s.id}`}>{s.name}</a></li>)}
+      </ul>
+    </div>
+  </nav>
+
+  <section class="band band--tight">
+    <div class="wrap menu-cols">
+      {menu.map((s) => (
+        <section class="menu-sec" id={s.id}>
+          <h2 class="t-lg">{s.name}</h2>
+          {s.note && <p class="menu-sec__note">{s.note}</p>}
+          <ul>
+            {s.items.map((it) => (
+              <li>
+                <span class="menu-item__name">{it.names.join(', ')}{it.detail && <small>{it.detail}</small>}</span>
+                <span class="price">{money(it.price)}</span>
+              </li>
+            ))}
+          </ul>
+          {s.footnote && <p class="menu-sec__foot">{s.footnote}</p>}
+        </section>
+      ))}
+    </div>
+  </section>
+
+  <section class="band band--mist">
+    <div class="wrap matcha">
+      <Placeholder label="Matcha being poured" size="1200 × 1200" shape="circle" tone="sage" ratio="1 / 1" />
+      <div>
+        <h2 class="t-xl rise">About our matcha</h2>
+        <p class="lede" style="margin-top:1.75rem">We use 100% ceremonial grade matcha from Uji, Japan, known for its quality and rich flavour.</p>
+        <p>It’s full of antioxidants, vitamins and natural caffeine: a gentle lift that keeps you going.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap band-head" style="margin-bottom:0">
+      <h2 class="t-xl rise">On the menu at your event</h2>
+      <div>
+        <p class="lede">Per-person packages start at {formatPrice(6)} and can include drinks, pastries and focaccia sandwiches. For platters and catering, order at least 5 days ahead.</p>
+        <div class="btn-row" style="margin-top:1.5rem">
+          <a class="btn btn--primary" href="/#pricing">See event prices</a>
+          <a class="btn" href="/contact">Ask about catering</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Closing tone="cream" />
+</Base>
+
+<style is:global>
+  .menu-nav { position: sticky; top: 4.5rem; z-index: 20; padding-block: 0.75rem; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(12px); border-block: 1px solid var(--line); }
+  .menu-nav .chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
+  .menu-nav .chips::-webkit-scrollbar { display: none; }
+  .menu-nav .chip { text-decoration: none; white-space: nowrap; min-height: 2.5rem; }
+  .menu-cols { display: grid; gap: clamp(3rem, 6vw, 5rem) clamp(3rem, 7vw, 7rem); }
+  @media (min-width: 64rem) { .menu-cols { grid-template-columns: 1fr 1fr; } }
+  .menu-sec { scroll-margin-top: 9.5rem; }
+  .menu-sec__note { margin-top: 0.6rem; font-family: var(--display); font-style: italic; font-size: 1.2rem; color: var(--terracotta-deep); }
+  .menu-sec ul { margin-top: 1.5rem; border-top: 1.5px solid var(--ink); }
+  .menu-sec li { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: baseline; padding: 0.9rem 0; border-bottom: 1px solid var(--line); }
+  .menu-item__name small { display: block; margin-top: 0.15rem; font-size: var(--t-small); color: var(--ink-soft); }
+  .menu-sec .price { font-size: 1.3rem; color: var(--terracotta-deep); }
+  .menu-sec__foot { margin-top: 1rem; font-size: var(--t-small); color: var(--ink-soft); }
+  .matcha { display: grid; gap: 2.5rem; align-items: center; }
+  .matcha .ph { max-width: 24rem; }
+  @media (min-width: 64rem) { .matcha { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 6rem; } .matcha .ph { max-width: none; } }
+</style>
