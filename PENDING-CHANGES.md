@@ -14,17 +14,18 @@ Noted only. Nothing here is applied until the owner says so.
    it is taller than the screen.
 
 3. **Booking options: three ways to book.** Replaces how the site presents booking today
-   (per person / by the hour / flat rate, from the events deck).
-   Owner's model, 18 Nov:
-   - **Hourly (packages):** £6 space only · £10.50 space + drink · £12.50 space + drink + pastry ·
+   (per person / by the hour / flat rate, from the events deck). Owner's model, 18 Nov:
+   - **Hourly (per guest):** packages priced per guest for the first 2 hours:
+     £6 space only · £10.50 space + drink · £12.50 space + drink + pastry ·
      £18.50 space + drink + sandwich · £22.50 space + drink + sandwich + cookie.
-   - **Semi-private:** space only (deck price £120/hour, coffee bar stays open to the public).
-   - **Fully private:** space only (deck price £150/hour, the whole café).
-   - **Flat rate** (£440 half day, £960 full day): space only.
-   - Semi-private, private and flat rate are space only; the customer can opt for add-ons.
-   **Still open:** whether the hourly prices are per guest per hour or per guest for a
-   2-hour booking (the deck says the latter); which of the three the flat rate belongs to;
-   what the add-ons are and what they cost.
+     Each extra hour adds £3 per guest (space is £3 per guest per hour).
+     Price = (package price + £3 × (hours − 2)) × guests.
+     Example: 20 guests, 3 hours, space + drink = (£10.50 + £3) × 20 = £270.
+     Assumed: 2 hours is the minimum (not yet confirmed).
+   - **Semi-private:** £120/hour, space only, coffee bar stays open to the public.
+   - **Fully private:** £150/hour, space only, the whole café. Also offered as a flat rate:
+     £440 half day (4 hours), £960 full day (up to 9 hours).
+   - **Add-ons** (semi-private and fully private): any item from the menu at menu prices.
    Affects: `src/data/pricing.ts`, the pricing section and the "Imagine yours" estimator
    (`src/pages/index.astro`), the FAQ (`src/data/events.ts`), contact form "How private?"
    options (`src/pages/contact.astro`), the menu page's event-pricing line.
