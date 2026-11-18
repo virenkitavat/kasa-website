@@ -13,13 +13,18 @@ Noted only. Nothing here is applied until the owner says so.
    1280×720 laptop, 1307px on an 834×1112 tablet, 1429px on a 390×844 phone. On every size
    it is taller than the screen.
 
-3. **Booking options: three ways to book.** The owner describes booking as three options:
-   (1) hourly, (2) semi-private, (3) fully private. This replaces how the site presents
-   booking today, which follows the events deck: per person (£6–£22.50 per guest),
-   by the hour (semi-private £120/h or private £150/h) and flat rate (£440 half day,
-   £960 full day). **Open questions for the owner before this can be applied:**
-   prices and rules for each of the three; what happens to the per-person packages and the
-   flat rates; how "hourly" differs from semi-private and fully private.
+3. **Booking options: three ways to book.** Replaces how the site presents booking today
+   (per person / by the hour / flat rate, from the events deck).
+   Owner's model, 18 Nov:
+   - **Hourly (packages):** £6 space only · £10.50 space + drink · £12.50 space + drink + pastry ·
+     £18.50 space + drink + sandwich · £22.50 space + drink + sandwich + cookie.
+   - **Semi-private:** space only (deck price £120/hour, coffee bar stays open to the public).
+   - **Fully private:** space only (deck price £150/hour, the whole café).
+   - **Flat rate** (£440 half day, £960 full day): space only.
+   - Semi-private, private and flat rate are space only; the customer can opt for add-ons.
+   **Still open:** whether the hourly prices are per guest per hour or per guest for a
+   2-hour booking (the deck says the latter); which of the three the flat rate belongs to;
+   what the add-ons are and what they cost.
    Affects: `src/data/pricing.ts`, the pricing section and the "Imagine yours" estimator
    (`src/pages/index.astro`), the FAQ (`src/data/events.ts`), contact form "How private?"
    options (`src/pages/contact.astro`), the menu page's event-pricing line.
