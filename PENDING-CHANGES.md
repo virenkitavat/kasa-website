@@ -32,6 +32,7 @@ Noted only. Nothing here is applied until the owner says so.
 
 4. **Booking page: "Book direct" button.** Add a button labelled **Book direct** linking to
    https://occasia.io/venue/kasa-cafe . Where: `src/pages/booking.astro`.
-   Proposed (owner to confirm when applying): make it the main button on the page, with
-   "Send an enquiry" and the email as the alternatives; open Occasia in a new tab; replace
-   the current "Online booking opens here soon" wording, since booking will be available.
+   Keep the "Online booking opens here soon" wording: Kasa will embed its own booking
+   system on this page later (owner, 18 Nov).
+   Proposed (owner to confirm when applying): make Book direct the main button, with
+   "Send an enquiry" and the email as the alternatives; open Occasia in a new tab.
