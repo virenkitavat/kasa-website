@@ -1,6 +1,10 @@
-# Pending website changes
+# Website changes
 
-Noted only. Nothing here is applied until the owner says so.
+Changes are noted here first and applied only when the owner says so.
+
+## Applied 18 Nov 2026
+
+Changes 1 to 4 below were applied on the owner's go-ahead and published.
 
 1. **Logo: remove "café".** The header logo reads "kasa café"; change it to "kasa".
    Where: `src/layouts/Base.astro` (the `.logo` link). Header logo only; page titles,

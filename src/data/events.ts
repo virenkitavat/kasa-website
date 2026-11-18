@@ -52,12 +52,20 @@ export const faqs = [
     a: 'Cancel at least 72 hours before your event and you get a full refund. Cancellations within 72 hours of the event are non-refundable.',
   },
   {
+    q: 'How is an hourly booking priced?',
+    a: 'Per guest. Packages cover the first 2 hours, from £6 a guest for the space to £22.50 with a drink, sandwich and cookie. Each extra hour is £3 per guest. 2 hours is the minimum.',
+  },
+  {
+    q: 'What can I add to a semi-private or fully private booking?',
+    a: 'Both are priced for the space only. Add anything from our menu at menu prices.',
+  },
+  {
     q: 'When do I need to order food?',
     a: 'Platters and catering need to be ordered at least 5 days before the event. You can buy more food and drink on the day, subject to what the café has available.',
   },
   {
     q: 'Can I bring my own food and drink?',
-    a: 'Yes, with private hire. For semi-private bookings, food and drink come from our menu or our in-house catering.',
+    a: 'Yes, with fully private hire. With hourly and semi-private bookings, food and drink come from our menu.',
   },
   {
     q: 'When can events run?',
@@ -65,7 +73,7 @@ export const faqs = [
   },
   {
     q: 'Will the café be open to the public during my event?',
-    a: 'With semi-private hire the front coffee bar stays open for takeaway. With private hire the whole café is yours. Talk to us if you want to fully privatise the space; extra charges may apply.',
+    a: 'With hourly and semi-private bookings the front coffee bar stays open to the public. With fully private hire the whole café, coffee bar included, is yours.',
   },
   {
     q: 'What am I responsible for as the host?',

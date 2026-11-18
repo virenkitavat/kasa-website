@@ -1,12 +1,12 @@
 ---
-import { perPerson, hourly, flat, included, extras, formatPrice } from '../data/pricing';
+import { hourly, semiPrivate, fullyPrivate, included, extras, formatPrice } from '../data/pricing';
 ---
 <div class="pricing">
   <div>
-    <h3>{perPerson.title}</h3>
-    <p class="muted">{perPerson.note}</p>
+    <h3>{hourly.title}</h3>
+    <p class="muted">{hourly.note}</p>
     <ul class="ladder">
-      {perPerson.tiers.map((t) => (
+      {hourly.tiers.map((t) => (
         <li>
           <span class="price">{formatPrice(t.price)}</span>
           <span>{t.includes}{t.detail && <small>{t.detail}</small>}</span>
@@ -16,24 +16,26 @@ import { perPerson, hourly, flat, included, extras, formatPrice } from '../data/
   </div>
   <div class="pricing__side">
     <div class="rate">
-      <h3>{hourly.title}</h3>
+      <h3>{semiPrivate.title}</h3>
       <ul>
-        {hourly.options.map((o) => (
-          <li>
-            <span class="price">{formatPrice(o.price)} <span>an hour</span></span>
-            <strong>{o.name}. {o.when}.</strong>
-            <span class="muted">{o.detail}</span>
-          </li>
-        ))}
+        <li>
+          <span class="price">{formatPrice(semiPrivate.perHour)} <span>an hour</span></span>
+          <strong>{semiPrivate.when}.</strong>
+          <span class="muted">{semiPrivate.detail}</span>
+        </li>
       </ul>
     </div>
     <div class="rate">
-      <h3>{flat.title}</h3>
-      <p class="muted">{flat.note}</p>
+      <h3>{fullyPrivate.title}</h3>
       <ul>
-        {flat.options.map((o) => (
+        <li>
+          <span class="price">{formatPrice(fullyPrivate.perHour)} <span>an hour</span></span>
+          <strong>{fullyPrivate.when}.</strong>
+          <span class="muted">{fullyPrivate.detail}</span>
+        </li>
+        {fullyPrivate.flat.map((o) => (
           <li>
-            <span class="price">{formatPrice(o.price)}</span>
+            <span class="price">{formatPrice(o.price)} <span>flat rate</span></span>
             <strong>{o.name}</strong>
             <span class="muted">{o.detail}</span>
           </li>
@@ -43,7 +45,7 @@ import { perPerson, hourly, flat, included, extras, formatPrice } from '../data/
     <p><span class="vat">All prices include VAT</span></p>
   </div>
 </div>
-<ul class="included" aria-label="Every package includes">
+<ul class="included" aria-label="Every booking includes">
   {included.map((i) => <li>{i}</li>)}
 </ul>
 <div class="notes">

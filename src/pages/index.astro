@@ -5,7 +5,7 @@ import Pricing from '../components/Pricing.astro';
 import Closing from '../components/Closing.astro';
 import { site } from '../data/site';
 import { zones, formats, categories, bookingSteps } from '../data/events';
-import { perPerson, hourly, flat } from '../data/pricing';
+import { hourly, semiPrivate, fullyPrivate } from '../data/pricing';
 import { testimonials, logos, showPlaceholders } from '../data/proof';
 
 const catName = (id: string) => categories.find((c) => c.id === id)?.name ?? '';
@@ -22,11 +22,12 @@ const marquee = formats.map((f) => f.name);
 const showQuotes = testimonials.ready || showPlaceholders;
 const showLogos = logos.ready || showPlaceholders;
 const pricingData = {
-  perPerson: perPerson.tiers.map((t) => t.price),
-  semi: hourly.options[0].price,
-  private: hourly.options[1].price,
-  half: flat.options[0].price,
-  full: flat.options[1].price,
+  tiers: hourly.tiers.map((t) => t.price),
+  minHours: hourly.minHours,
+  extra: hourly.extraHourPerGuest,
+  semi: semiPrivate.perHour,
+  private: fullyPrivate.perHour,
+  flat: fullyPrivate.flat.map((f) => ({ name: f.name, hours: f.hours, price: f.price })),
   seated: site.capacity.seated,
 };
 ---
@@ -90,31 +91,36 @@ const pricingData = {
   </section>
 
   <!-- 3. What happens here -->
-  <section class="band band--cream">
+  <section class="band band--cream happens">
     <div class="wrap">
-      <div class="band-head">
-        <h2 class="t-xl rise">What happens here</h2>
-        <p class="lede">We’ve hosted them all. Pick one to see how it fits the room.</p>
+      <div class="happens__head">
+        <h2 class="rise">What happens here</h2>
+        <p>We’ve hosted them all. Pick one to see it.</p>
       </div>
       <div class="formats" data-formats>
         <ul class="formats__list">
           {formats.map((f, i) => (
-            <li class:list={['format', i === 0 && 'is-active']} data-format>
-              <button class="format__btn" type="button" aria-expanded={i === 0 ? 'true' : 'false'}>
+            <li>
+              <button class="format__btn" type="button" data-format={f.id} aria-controls={`fmt-${f.id}`} aria-pressed={i === 0 ? 'true' : 'false'}>
                 <span class="format__name">{f.name}</span>
-                <span class="tag format__cat">{catName(f.category)}</span>
               </button>
-              <div class="format__detail">
-                <div class="card">
-                  <Placeholder label={f.name} size="1200 × 1200" ratio="1 / 1" tone="paper" />
-                  <div class:list={['card__bar', `card__bar--${catTone(f.category)}`]}>{f.name}</div>
-                </div>
-                <p>{f.text}</p>
-                <a class="link" href={`/events?category=${f.category}`}>See {catName(f.category).toLowerCase()} at Kasa</a>
-              </div>
             </li>
           ))}
         </ul>
+        <div class="formats__preview">
+          {formats.map((f, i) => (
+            <div class="format__detail" id={`fmt-${f.id}`} hidden={i !== 0}>
+              <div class="card">
+                <Placeholder label={f.name} size="1600 × 1000" ratio="16 / 10" tone="paper" />
+                <div class:list={['card__bar', `card__bar--${catTone(f.category)}`]}>{catName(f.category)}</div>
+              </div>
+              <div class="format__text">
+                <p>{f.text}</p>
+                <a class="link" href={`/events?category=${f.category}`}>See {catName(f.category).toLowerCase()} at Kasa</a>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </section>
@@ -124,7 +130,7 @@ const pricingData = {
     <div class="wrap">
       <div class="band-head">
         <h2 class="t-xl rise">Imagine yours</h2>
-        <p class="lede">Four choices, and you’ll see what your event could cost before you send us a word.</p>
+        <p class="lede">Four choices, and you’ll see what each way of booking would cost before you send us a word.</p>
       </div>
       <form class="est" data-est action="/contact" method="get">
         <div class="est__controls">
@@ -146,31 +152,32 @@ const pricingData = {
             <p class="est__hint" data-est-hint>Everyone gets a seat.</p>
           </fieldset>
           <fieldset>
-            <legend>How private?</legend>
-            <div class="chips">
-              <label><input class="chip-input" type="radio" name="hire" value="semi" checked /><span class="chip">Semi-private</span></label>
-              <label><input class="chip-input" type="radio" name="hire" value="private" /><span class="chip">Private</span></label>
+            <legend><label for="est-hours">How long?</label></legend>
+            <div class="est__guests">
+              <output class="est__count" for="est-hours" data-est-hours>2</output>
+              <input id="est-hours" type="range" name="hours" min={hourly.minHours} max="9" value={hourly.minHours} />
             </div>
-            <p class="est__hint" data-est-hire>The coffee bar at the front keeps serving takeaway.</p>
+            <p class="est__hint" data-est-hours-hint>Hours. Bookings start at 2 hours.</p>
           </fieldset>
           <fieldset>
-            <legend>How long?</legend>
+            <legend>When?</legend>
             <div class="chips">
-              <label><input class="chip-input" type="radio" name="length" value="2h" checked /><span class="chip">2 hours</span></label>
-              <label><input class="chip-input" type="radio" name="length" value="half" /><span class="chip">Half day</span></label>
-              <label><input class="chip-input" type="radio" name="length" value="full" /><span class="chip">Full day</span></label>
-              <label><input class="chip-input" type="radio" name="length" value="evening" /><span class="chip">Evening, after closing</span></label>
+              <label><input class="chip-input" type="radio" name="when" value="day" checked /><span class="chip">During café hours</span></label>
+              <label><input class="chip-input" type="radio" name="when" value="after" /><span class="chip">After closing</span></label>
             </div>
+            <p class="est__hint" data-est-when>Café hours are 8am to 6pm on weekdays, shorter at weekends.</p>
           </fieldset>
         </div>
-        <div class="est__result">
-          <h3 class="t-md">Your options</h3>
-          <ul class="est__options" data-est-out aria-live="polite">
-            <li><span class="est__name">Per person</span><span class="price est__price">from £120</span><span class="est__why">£6 each for the space, up to £22.50 each with a sandwich, drink and cookie.</span></li>
-          </ul>
-          <button class="btn btn--ink" type="submit">Enquire with these details</button>
-          <p class="est__small">An estimate, including VAT. We confirm the price when you enquire.</p>
-        </div>
+        <fieldset class="est__result">
+          <legend class="t-md">Your options</legend>
+          <div class="est__options" data-est-out aria-live="polite">
+            <label class="est__opt"><input type="radio" name="booking" value="hourly" checked /><span class="est__name">Hourly</span><span class="price est__price">from £120</span><span class="est__why">£6 a guest for 2 hours, space only.</span></label>
+            <label class="est__opt"><input type="radio" name="booking" value="semi" /><span class="est__name">Semi-private</span><span class="price est__price">£240</span><span class="est__why">£120 an hour for 2 hours.</span></label>
+            <label class="est__opt"><input type="radio" name="booking" value="private" /><span class="est__name">Fully private</span><span class="price est__price">£300</span><span class="est__why">£150 an hour for 2 hours.</span></label>
+          </div>
+          <button class="btn btn--ink" type="submit">Enquire about this option</button>
+          <p class="est__small">Pick an option to enquire about it. An estimate, including VAT: we confirm the price when you enquire.</p>
+        </fieldset>
       </form>
       <script type="application/json" id="pricing-data" set:html={JSON.stringify(pricingData)} />
     </div>
@@ -181,7 +188,7 @@ const pricingData = {
     <div class="wrap">
       <div class="band-head">
         <h2 class="t-xl rise">What we provide</h2>
-        <p class="lede">Three ways to pay, depending on the size and shape of your event. Baristas, your own music and somewhere to store your equipment come with all of them.</p>
+        <p class="lede">Three ways to book: hourly packages priced per guest, or the space semi-private or fully private. Baristas, your own music and somewhere to store your equipment come with every booking.</p>
       </div>
       <Pricing />
     </div>
@@ -314,31 +321,50 @@ const pricingData = {
   }
 
   /* ----- Event formats index ----- */
-  .formats { position: relative; }
-  .formats__list { border-top: 1.5px solid var(--ink); }
-  .format { border-bottom: 1px solid var(--line); }
-  .format__btn { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; width: 100%; padding: clamp(0.8rem, 1.6vw, 1.2rem) 0; background: none; border: 0; text-align: left; cursor: pointer; }
-  .format__name { font-family: var(--display); font-weight: 300; font-size: clamp(1.75rem, 4.2vw, 3.75rem); letter-spacing: -0.035em; line-height: 1; transition: transform 0.4s var(--ease), color 0.3s; }
-  .format__cat { color: var(--ink-soft); white-space: nowrap; }
-  .format.is-active .format__name { color: var(--terracotta-deep); transform: translateX(0.35em); font-style: italic; }
-  .format__detail { display: none; padding-bottom: 1.75rem; }
-  .format.is-active .format__detail { display: grid; gap: 1rem; }
-  .format__detail .card { max-width: 24rem; box-shadow: var(--shadow); }
-  .format__detail .link { display: inline-flex; align-items: center; min-height: 2.75rem; justify-self: start; }
-  @media (max-width: 63.99rem) { .format__cat { display: none; } }
-  @media (min-width: 40rem) and (max-width: 63.99rem) {
-    .format.is-active .format__detail { grid-template-columns: 17rem 1fr; grid-template-rows: 1fr auto; column-gap: 2rem; align-items: end; }
-    .format__detail .card { grid-row: 1 / 3; align-self: start; }
-    .format__detail > p { align-self: end; }
-  }
+  /* The whole section is sized to fit one screen at every width. */
+  .happens { padding-block: clamp(2rem, 6vh, 4.5rem); }
+  .happens__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 2rem; margin-bottom: clamp(1rem, 3vh, 2rem); }
+  .happens__head h2 { font-size: clamp(2.2rem, 4.6vw, 4rem); }
+  .happens__head p { margin: 0; color: var(--ink-soft); }
+  .formats { display: grid; gap: clamp(1rem, 2.5vh, 1.5rem); }
 
-  @media (min-width: 64rem) {
-    .formats__list { width: 60%; }
-    .format__detail { position: absolute; top: 0; right: 0; width: 32%; padding: 0; }
-    .format__detail .card { max-width: none; }
-    .format.is-active .format__detail { animation: detail-in 0.45s var(--ease); }
+  /* Phone: event types as chips, the preview below. */
+  .formats__list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .format__btn {
+    display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0.3rem 0.9rem;
+    border: 1.5px solid var(--ink); border-radius: 999px; background: none; cursor: pointer; text-align: left;
+    transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
   }
-  @keyframes detail-in { from { opacity: 0; transform: translateY(1rem); } }
+  .format__name { font-family: var(--label); font-size: 0.95rem; letter-spacing: 0.03em; line-height: 1.1; }
+  .format__btn[aria-pressed='true'] { background: var(--ink); color: var(--bg); }
+
+  .format__detail { display: grid; grid-template-columns: 9.5rem 1fr; gap: 0.9rem; align-items: start; }
+  .format__detail[hidden] { display: none; }
+  .format__detail .card { box-shadow: var(--shadow); border-radius: var(--r-sm); }
+  .format__detail .card__bar { padding: 0.45rem 0.7rem; font-size: 0.95rem; }
+  .format__text p { margin-bottom: 0.25rem; font-size: 1rem; line-height: 1.5; }
+  .format__detail .link { display: inline-flex; align-items: center; min-height: 2.75rem; }
+
+  /* Tablet and up: the big serif names, in two columns, beside or above the preview. */
+  @media (min-width: 40rem) {
+    .formats__list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 2rem; gap: 0 2rem; border-top: 1.5px solid var(--ink); }
+    .formats__list li { border-bottom: 1px solid var(--line); }
+    .format__btn { display: flex; width: 100%; min-height: 0; padding: clamp(0.45rem, 1.2vh, 0.75rem) 0; border: 0; border-radius: 0; }
+    .format__name { font-family: var(--display); font-weight: 300; font-size: clamp(1.5rem, 2.7vw, 2.4rem); letter-spacing: -0.03em; line-height: 1.05; transition: transform 0.4s var(--ease), color 0.3s; }
+    .format__btn[aria-pressed='true'] { background: none; color: var(--terracotta-deep); }
+    .format__btn[aria-pressed='true'] .format__name { font-style: italic; transform: translateX(0.3em); }
+    .format__detail { grid-template-columns: 15rem 1fr; gap: 1.5rem; align-items: end; }
+    .format__detail .card { border-radius: var(--r-lg); }
+    .format__detail .card__bar { padding: 0.6rem 1rem; font-size: 1.0625rem; }
+    .format__text p { font-size: var(--t-body); }
+  }
+  @media (min-width: 64rem) {
+    .formats { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 3.5rem; align-items: start; }
+    .format__detail { grid-template-columns: 1fr; gap: 0.75rem; align-items: start; }
+    .format__detail .ph { max-height: 34vh; }
+    .format__detail:not([hidden]) { animation: detail-in 0.45s var(--ease); }
+  }
+  @keyframes detail-in { from { opacity: 0; transform: translateY(0.75rem); } }
 
   /* ----- Estimator ----- */
   .est { display: grid; gap: clamp(2rem, 4vw, 4rem); }
@@ -349,9 +375,15 @@ const pricingData = {
   .est__guests input { flex: 1; accent-color: var(--ink); height: 2.75rem; }
   .est__hint { margin-top: 0.75rem; color: var(--ink-soft); font-size: var(--t-small); }
   .est__result { display: grid; gap: 1.25rem; align-content: start; padding: clamp(1.5rem, 3vw, 2.5rem); border-radius: var(--r-lg); background: var(--paper); box-shadow: var(--shadow); }
-  .est__options { display: grid; }
-  .est__options li { display: grid; grid-template-columns: 1fr auto; gap: 0.15rem 1rem; padding: 1.1rem 0; border-top: 1px solid var(--line); }
-  .est__options li:first-child { border-top: 1.5px solid var(--ink); }
+  /* The options card is a fieldset: restore its padding over the generic `.est fieldset` reset. */
+  .est fieldset.est__result { border: 0; margin: 0; min-width: 0; padding: clamp(1.5rem, 3vw, 2.5rem); }
+  .est__result legend { float: left; width: 100%; padding: 0; margin-bottom: 1.25rem; font-family: var(--display); letter-spacing: -0.02em; }
+  .est__options { display: grid; clear: both; border-top: 1.5px solid var(--ink); }
+  .est__opt { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 0.15rem 1rem; padding: 1rem 0.75rem 1rem 2.6rem; border-bottom: 1px solid var(--line); cursor: pointer; transition: background-color 0.2s; }
+  .est__opt:hover { background: rgba(10, 32, 6, 0.04); }
+  .est__opt input { position: absolute; left: 0.75rem; top: 1.2rem; width: 1.15rem; height: 1.15rem; margin: 0; accent-color: var(--ink); cursor: pointer; }
+  .est__opt:has(input:checked) { background: var(--cream); }
+  .est__opt:has(input:focus-visible) { outline: 3px solid var(--ink); outline-offset: -3px; }
   .est__name { font-family: var(--label); font-size: 1.125rem; letter-spacing: 0.03em; align-self: end; }
   .est__name em { font-style: normal; margin-left: 0.5rem; padding: 0.15rem 0.6rem; border-radius: 999px; background: var(--sage); font-size: 0.875rem; }
   .est__price { font-size: clamp(1.75rem, 2.8vw, 2.5rem); line-height: 1; color: var(--terracotta-deep); text-align: right; }
@@ -421,67 +453,74 @@ const pricingData = {
     return () => { tween.scrollTrigger?.kill(); tween.kill(); gsap.set(track, { clearProps: 'all' }); tour.classList.remove('is-pinned'); };
   });
 
-  // Event formats: hover or tap a name to see it.
-  const items = [...document.querySelectorAll<HTMLElement>('[data-format]')];
+  // Event formats: hover or tap a name to see it in the preview.
+  const fmtBtns = [...document.querySelectorAll<HTMLButtonElement>('[data-format]')];
   const hover = window.matchMedia('(hover: hover) and (min-width: 1024px)');
-  function activate(item: HTMLElement) {
-    items.forEach((i) => {
-      const on = i === item;
-      i.classList.toggle('is-active', on);
-      i.querySelector('button')?.setAttribute('aria-expanded', String(on));
+  function activate(btn: HTMLButtonElement) {
+    fmtBtns.forEach((b) => {
+      const on = b === btn;
+      if ((b.getAttribute('aria-pressed') === 'true') === on) return;
+      b.setAttribute('aria-pressed', String(on));
+      const panel = document.getElementById(b.getAttribute('aria-controls')!);
+      if (panel) panel.hidden = !on;
     });
   }
-  items.forEach((item) => {
-    const btn = item.querySelector('button')!;
-    btn.addEventListener('click', () => activate(item));
-    btn.addEventListener('focus', () => activate(item));
-    item.addEventListener('pointerenter', () => { if (hover.matches) activate(item); });
+  fmtBtns.forEach((btn) => {
+    btn.addEventListener('click', () => activate(btn));
+    btn.addEventListener('focus', () => activate(btn));
+    btn.addEventListener('pointerenter', () => { if (hover.matches) activate(btn); });
   });
 
   // Estimator: reads prices from the page (which come from src/data/pricing.ts).
   const est = document.querySelector<HTMLFormElement>('[data-est]');
   const data = JSON.parse(document.getElementById('pricing-data')?.textContent || '{}');
   const money = (n: number) => '£' + (Number.isInteger(n) ? n.toLocaleString('en-GB') : n.toFixed(2));
-  type Option = { name: string; price: string; total: number; why: string };
+  type Option = { id: string; name: string; price: string; total: number; why: string };
 
   function update() {
     if (!est) return;
     const f = new FormData(est);
     const guests = Number(f.get('guests'));
-    const length = String(f.get('length'));
-    const evening = length === 'evening';
-    const hire = evening ? 'private' : String(f.get('hire'));
-    const hours = { '2h': 2, half: 4, full: 9 }[length] ?? 0;
+    const hours = Number(f.get('hours'));
+    const after = f.get('when') === 'after';
+    const chosen = String(f.get('booking') || '');
+    const hrs = (n: number) => `${n} hour${n === 1 ? '' : 's'}`;
     const options: Option[] = [];
 
-    if (!evening && length === '2h') {
-      const lo = data.perPerson[0], hi = data.perPerson[data.perPerson.length - 1];
-      options.push({ name: 'Per person', price: 'from ' + money(lo * guests), total: lo * guests,
-        why: `${money(lo)} each for the space, up to ${money(hi)} each with a sandwich, drink and cookie (${money(hi * guests)}).` });
+    if (!after) {
+      // Hourly: package price covers the first 2 hours; each extra hour adds the space rate per guest.
+      const add = data.extra * (hours - data.minHours);
+      const lo = data.tiers[0] + add, hi = data.tiers[data.tiers.length - 1] + add;
+      options.push({ id: 'hourly', name: 'Hourly', price: 'from ' + money(lo * guests), total: lo * guests,
+        why: `${money(lo)} a guest for ${hrs(hours)}, space only. Up to ${money(hi)} a guest with a drink, sandwich and cookie (${money(hi * guests)}).` });
+      options.push({ id: 'semi', name: 'Semi-private', price: money(data.semi * hours), total: data.semi * hours,
+        why: `${money(data.semi)} an hour for ${hrs(hours)}. Space only, with menu items at menu prices. The coffee bar stays open to the public.` });
     }
-    if (evening) {
-      options.push({ name: 'By the hour, private', price: money(data.private) + ' an hour', total: data.private,
-        why: `After closing, the whole café is yours. Three hours would be ${money(data.private * 3)}.` });
-    } else {
-      const rate = hire === 'semi' ? data.semi : data.private;
-      options.push({ name: hire === 'semi' ? 'By the hour, semi-private' : 'By the hour, private', price: money(rate * hours), total: rate * hours,
-        why: `${money(rate)} an hour for ${hours} hours.` });
-      if (length === 'half') options.push({ name: 'Flat rate, half day', price: money(data.half), total: data.half, why: 'Four hours during café hours.' });
-      if (length === 'full') options.push({ name: 'Flat rate, full day', price: money(data.full), total: data.full, why: 'Up to nine hours during café hours.' });
-    }
+    const byHour = data.private * hours;
+    const flat = after ? undefined : data.flat.filter((x: any) => hours <= x.hours).sort((x: any, y: any) => x.price - y.price)[0];
+    const useFlat = flat && flat.price < byHour;
+    options.push({ id: 'private', name: 'Fully private', price: money(useFlat ? flat.price : byHour), total: useFlat ? flat.price : byHour,
+      why: useFlat
+        ? `${flat.name} flat rate, less than ${hrs(hours)} at ${money(data.private)} an hour (${money(byHour)}). The whole café, space only.`
+        : `${money(data.private)} an hour for ${hrs(hours)}. The whole café, space only, with menu items at menu prices.` });
 
     const low = Math.min(...options.map((o) => o.total));
+    const pick = options.some((o) => o.id === chosen) ? chosen : options.find((o) => o.total === low)!.id;
     const out = est.querySelector('[data-est-out]')!;
     out.innerHTML = options.map((o) =>
-      `<li><span class="est__name">${o.name}${options.length > 1 && o.total === low ? '<em>Lowest price</em>' : ''}</span><span class="price est__price">${o.price}</span><span class="est__why">${o.why}</span></li>`).join('');
+      `<label class="est__opt"><input type="radio" name="booking" value="${o.id}"${o.id === pick ? ' checked' : ''} /><span class="est__name">${o.name}${options.length > 1 && o.total === low ? '<em>Lowest price</em>' : ''}</span><span class="price est__price">${o.price}</span><span class="est__why">${o.why}</span></label>`).join('');
 
     est.querySelector('[data-est-count]')!.textContent = String(guests);
+    est.querySelector('[data-est-hours]')!.textContent = String(hours);
     est.querySelector('[data-est-hint]')!.textContent = guests > data.seated
       ? `We seat ${data.seated}, so with ${guests} guests some will be standing.`
       : 'Everyone gets a seat.';
-    est.querySelector('[data-est-hire]')!.textContent = evening
-      ? 'After closing, hire is always private.'
-      : hire === 'semi' ? 'The coffee bar at the front keeps serving takeaway.' : 'The whole café, coffee bar included, is yours.';
+    est.querySelector('[data-est-hours-hint]')!.textContent = hours === data.minHours
+      ? 'Hours. Bookings start at 2 hours.'
+      : hours >= 9 ? 'Hours. A full day.' : 'Hours.';
+    est.querySelector('[data-est-when]')!.textContent = after
+      ? 'After closing, the café is only available fully private.'
+      : 'Café hours are 8am to 6pm on weekdays, shorter at weekends.';
   }
   est?.addEventListener('input', update);
   update();

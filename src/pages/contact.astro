@@ -16,7 +16,8 @@ import { categories, faqs } from '../data/events';
         <!-- Where this form sends enquiries is set by `formEndpoint` in src/data/site.ts. -->
         <form class="form" name="enquiry" method="POST" action={site.formEndpoint || `mailto:${site.email}`} enctype={site.formEndpoint ? undefined : 'text/plain'} data-form data-endpoint={site.formEndpoint} data-email={site.email} novalidate>
           <input type="hidden" name="_subject" value="New event enquiry from the website" />
-          <input type="hidden" name="length" value="" />
+          <input type="hidden" name="hours" value="" />
+          <input type="hidden" name="when" value="" />
           <p class="sr"><label>Leave this empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
           <div class="form__pair">
             <div class="field">
@@ -57,11 +58,12 @@ import { categories, faqs } from '../data/events';
             </div>
           </div>
           <div class="field">
-            <label for="f-hire">How private? <em>(optional)</em></label>
-            <select id="f-hire" name="hire">
+            <label for="f-booking">How would you like to book? <em>(optional)</em></label>
+            <select id="f-booking" name="booking">
               <option value="">Not sure yet</option>
-              <option value="semi">Semi-private: the coffee bar stays open</option>
-              <option value="private">Private: the whole café</option>
+              <option value="hourly">Hourly: priced per guest, from £6</option>
+              <option value="semi">Semi-private: £120 an hour, the coffee bar stays open</option>
+              <option value="private">Fully private: £150 an hour, the whole café</option>
             </select>
           </div>
           <div class="field">
@@ -155,12 +157,14 @@ import { categories, faqs } from '../data/events';
     };
     set('type', params.get('type'));
     set('guests', params.get('guests'));
-    set('hire', params.get('length') === 'evening' ? 'private' : params.get('hire'));
-    set('length', params.get('length'));
-    const lengths: Record<string, string> = { '2h': '2 hours', half: 'half a day', full: 'a full day', evening: 'an evening, after closing' };
-    const len = lengths[params.get('length') || ''];
-    if (from && len && params.get('guests')) {
-      from.textContent = `From your estimate: ${params.get('guests')} guests for ${len}. Add your name and a date and we’ll confirm the price.`;
+    set('booking', params.get('booking'));
+    set('hours', params.get('hours'));
+    set('when', params.get('when'));
+    const names: Record<string, string> = { hourly: 'hourly', semi: 'semi-private', private: 'fully private' };
+    const hours = Number(params.get('hours'));
+    if (from && hours && params.get('guests')) {
+      const how = names[params.get('booking') || ''];
+      from.textContent = `From your estimate: ${params.get('guests')} guests for ${hours} hours${params.get('when') === 'after' ? ' after closing' : ''}${how ? `, ${how}` : ''}. Add your name and a date and we’ll confirm the price.`;
       from.hidden = false;
     }
   }
@@ -191,7 +195,7 @@ import { categories, faqs } from '../data/events';
 
     // No form service set up yet: write the enquiry into an email instead.
     if (!endpoint) {
-      const labels: Record<string, string> = { name: 'Name', email: 'Email', phone: 'Phone', type: 'Type of event', date: 'Preferred date', guests: 'Guests', hire: 'How private', length: 'Length', message: 'Idea' };
+      const labels: Record<string, string> = { name: 'Name', email: 'Email', phone: 'Phone', type: 'Type of event', date: 'Preferred date', guests: 'Guests', booking: 'How to book', hours: 'Hours', when: 'When', message: 'Idea' };
       const lines = Object.entries(labels).map(([k, l]) => [l, String(data.get(k) || '').trim()]).filter(([, v]) => v).map(([l, v]) => `${l}: ${v}`);
       location.href = `mailto:${email}?subject=${encodeURIComponent('Event enquiry from ' + data.get('name'))}&body=${encodeURIComponent(lines.join('\n'))}`;
       say(`Your email app should now open with your enquiry written out. Press send there. If nothing opened, email us at ${email}.`);

@@ -1,47 +1,47 @@
-// The only place prices live. The pricing section and the
-// "Imagine yours" estimator both read from this file.
+// The only place prices live. The pricing section, the "Imagine yours" estimator
+// and the menu page all read from this file.
 // All prices are in pounds and include VAT.
 
-export const perPerson = {
-  title: 'Per person',
-  note: 'For a two-hour booking during café hours.',
-  tiers: [
-    { price: 6, includes: 'The space only' },
-    { price: 10.5, includes: 'One drink' },
-    { price: 12.5, includes: 'One pastry and one drink', detail: 'Pick any three pastries from the menu for your group.' },
-    { price: 18.5, includes: 'One sandwich and one drink' },
-    { price: 22.5, includes: 'One sandwich, one drink and a homemade cookie' },
-  ],
-};
-
+// 1. Hourly: priced per guest. Package prices cover the first 2 hours (the minimum);
+// each extra hour adds the space rate per guest.
 export const hourly = {
-  title: 'By the hour',
-  options: [
-    {
-      id: 'semi',
-      price: 120,
-      name: 'Semi-private',
-      when: 'During café hours',
-      detail: 'The coffee bar stays open to the public.',
-    },
-    {
-      id: 'private',
-      price: 150,
-      name: 'Private',
-      when: 'During or outside café hours',
-      detail: 'The whole café, coffee bar included, is yours.',
-    },
+  id: 'hourly',
+  title: 'Hourly',
+  minHours: 2,
+  extraHourPerGuest: 3,
+  note: 'Per guest, for the first 2 hours during café hours. Each extra hour is £3 per guest.',
+  tiers: [
+    { price: 6, includes: 'Space only' },
+    { price: 10.5, includes: 'Space and a drink' },
+    { price: 12.5, includes: 'Space, a drink and a pastry', detail: 'Pick any three pastries from the menu for your group.' },
+    { price: 18.5, includes: 'Space, a drink and a sandwich' },
+    { price: 22.5, includes: 'Space, a drink, a sandwich and a homemade cookie' },
   ],
 };
 
-export const flat = {
-  title: 'Flat rate',
-  note: 'During café hours.',
-  options: [
-    { id: 'half', price: 440, name: 'Half day', detail: '4 hours' },
-    { id: 'full', price: 960, name: 'Full day', detail: 'Up to 9 hours' },
+// 2. Semi-private: the space by the hour; the coffee bar stays open to the public.
+export const semiPrivate = {
+  id: 'semi',
+  title: 'Semi-private',
+  perHour: 120,
+  when: 'During café hours',
+  detail: 'Space only. The coffee bar at the front stays open to the public.',
+};
+
+// 3. Fully private: the whole café by the hour, or at a flat rate during café hours.
+export const fullyPrivate = {
+  id: 'private',
+  title: 'Fully private',
+  perHour: 150,
+  when: 'During or outside café hours',
+  detail: 'Space only. The whole café, coffee bar included, is yours.',
+  flat: [
+    { id: 'half', name: 'Half day', hours: 4, price: 440, detail: '4 hours, during café hours' },
+    { id: 'full', name: 'Full day', hours: 9, price: 960, detail: 'Up to 9 hours, during café hours' },
   ],
 };
+
+export const addOns = 'With semi-private and fully private hire, add anything from our menu at menu prices.';
 
 export const included = [
   'Play your own music',
@@ -51,14 +51,14 @@ export const included = [
 
 export const extras = [
   {
-    title: 'Bring your own',
-    text: 'With private hire you can bring food and drink from outside the café.',
+    title: 'Add-ons from the menu',
+    text: `${addOns} For platters and catering, order at least 5 days ahead.`,
   },
   {
-    title: 'In-house catering',
-    text: 'Add platters, pastries and focaccia sandwiches from our kitchen. Order at least 5 days ahead.',
+    title: 'Bring your own',
+    text: 'With fully private hire you can bring food and drink from outside the café.',
   },
 ];
 
 export const formatPrice = (n: number) =>
-  '£' + (Number.isInteger(n) ? n.toString() : n.toFixed(2));
+  '£' + (Number.isInteger(n) ? n.toLocaleString('en-GB') : n.toFixed(2));

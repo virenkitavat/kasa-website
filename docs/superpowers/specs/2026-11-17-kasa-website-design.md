@@ -72,18 +72,11 @@ Prices are shown publicly (owner decision).
   - Site groups them into five filter categories: **Celebrations** (celebrations, engagement, birthdays), **Workshops** (sip & paint, charm bracelets, book club, wine tasting), **Community** (run club, games night, networking), **Food & Music** (supper club, DJ/music), **Brands & Business** (pop-up shopping, product launches, work meetings). *Builder's call to refine.*
 
 ### Pricing (all prices include VAT)
-1. **Per person packages** — per person, 2-hour booking during operating hours, starting at:
-   - £6 — space only
-   - £10.50 — includes one drink
-   - £12.50 — one pastry + one drink (pick any 3 pastries from the menu and order)
-   - £18.50 — one sandwich + one drink
-   - £22.50 — one sandwich + one drink + homemade cookie
-2. **Hourly private hire**
-   - £120/hour — during operating hours, semi-private (coffee bar stays open to the public)
-   - £150/hour — during or outside operating hours, private venue (coffee bar private to you)
-3. **Flat rate options** (during working hours)
-   - £440 — half day (4 hours)
-   - £960 — full day (up to 9 hours)
+*Updated 18 Nov 2026 to the owner's booking model (replaces the deck's per person / by the hour / flat rate split).* Three ways to book:
+1. **Hourly**, priced per guest. Packages cover the first 2 hours (the minimum): £6 space only · £10.50 space + drink · £12.50 space + drink + pastry · £18.50 space + drink + sandwich · £22.50 space + drink + sandwich + cookie. Each extra hour adds £3 per guest.
+2. **Semi-private**: £120/hour during café hours, space only; the coffee bar stays open to the public.
+3. **Fully private**: £150/hour during or outside café hours, space only; the whole café. Also a flat rate during café hours: £440 half day (4 hours), £960 full day (up to 9 hours).
+- Add-ons for semi-private and fully private: any menu item at menu prices.
 
 ### All packages include
 *(Owner decision: "Exclusive use of the space" is removed from the site, and per-person packages are not tied to semi-private hire.)*
