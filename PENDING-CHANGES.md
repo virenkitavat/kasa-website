@@ -21,7 +21,7 @@ Noted only. Nothing here is applied until the owner says so.
      Each extra hour adds £3 per guest (space is £3 per guest per hour).
      Price = (package price + £3 × (hours − 2)) × guests.
      Example: 20 guests, 3 hours, space + drink = (£10.50 + £3) × 20 = £270.
-     Assumed: 2 hours is the minimum (not yet confirmed).
+     2 hours is the minimum (owner confirmed 18 Nov).
    - **Semi-private:** £120/hour, space only, coffee bar stays open to the public.
    - **Fully private:** £150/hour, space only, the whole café. Also offered as a flat rate:
      £440 half day (4 hours), £960 full day (up to 9 hours).
@@ -29,3 +29,9 @@ Noted only. Nothing here is applied until the owner says so.
    Affects: `src/data/pricing.ts`, the pricing section and the "Imagine yours" estimator
    (`src/pages/index.astro`), the FAQ (`src/data/events.ts`), contact form "How private?"
    options (`src/pages/contact.astro`), the menu page's event-pricing line.
+
+4. **Booking page: "Book direct" button.** Add a button labelled **Book direct** linking to
+   https://occasia.io/venue/kasa-cafe . Where: `src/pages/booking.astro`.
+   Proposed (owner to confirm when applying): make it the main button on the page, with
+   "Send an enquiry" and the email as the alternatives; open Occasia in a new tab; replace
+   the current "Online booking opens here soon" wording, since booking will be available.
