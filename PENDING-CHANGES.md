@@ -70,8 +70,11 @@ Changes 1 to 4 below were applied on the owner's go-ahead and published.
 8. **Newsletter sign-up link on the homepage and the About page.**
    Where: `src/pages/index.astro`, `src/pages/about.astro`; store the link once in
    `src/data/site.ts` so both pages (and later the footer) use the same address.
-   **Waiting on:** the sign-up link (e.g. a Mailchimp, Substack or Klaviyo sign-up page),
-   and where on each page it should sit.
+   Link (owner, 23 Nov): https://kasacafelondon.beehiiv.com/ (Beehiiv). Opens in a new tab.
+   Placement, Claude's proposal unless the owner says otherwise: homepage, a short
+   newsletter band just before the closing "Got something in mind?" section; About page,
+   directly after the three pillars. Wording drafted by Claude, e.g. "Hear about events
+   first" with a "Subscribe to our newsletter" button.
 
 9. **"Join our community" section: a wall of client logos ("wall of fame").**
    Placement to decide: the homepage or another page. Claude's proposal: on the homepage,
