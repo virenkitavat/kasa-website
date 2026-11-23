@@ -77,15 +77,19 @@ Changes 1 to 4 below were applied on the owner's go-ahead and published.
    first" with a "Subscribe to our newsletter" button.
 
 9. **"Join our community" section: a wall of client logos ("wall of fame").**
-   Placement to decide: the homepage or another page. Claude's proposal: on the homepage,
-   replacing the small "Brands we've hosted" logo strip in the proof section, which is the
-   same idea and is currently hidden until real logos exist (`src/data/proof.ts`, `logos`).
+   On the homepage, replacing the small "Brands we've hosted" logo strip in the proof
+   section, which is the same idea and is currently hidden until real logos exist
+   (`src/data/proof.ts`, `logos`).
    Logo files received 23 Nov, saved in `public/images/clients/` (not yet used on the site):
    - `chitchat-club-london.png` (ChitChat Club London)
    - `art-with-eesha.webp` (Art with Eesha)
    - `coffee-culture.webp` (Coffee Culture)
    - `awaan.png` (Awaan)
    - `the-thrivewell-hub.png` (The ThriveWell Hub)
-   All five are white on a transparent background, so the section needs a dark background
-   (the site's dark green) for them to show.
-   **Waiting on:** placement decision, and confirmation Kasa may show each brand.
+   - `her-aura.png` (Her Aura) — added 23 Nov
+   - `matcha-mixers.webp` (Matcha Mixers) — added 23 Nov
+   - `stickers-and-scribbles.png` (Stickers & Scribbles) — added 23 Nov
+   All eight are light (white or cream) on a transparent background, so the section needs a
+   dark background (the site's dark green) for them to show.
+   Placement: homepage (owner, 23 Nov). Permission to show all eight brands: confirmed by the
+   owner, 23 Nov. Ready to apply.
