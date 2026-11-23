@@ -58,7 +58,16 @@ Changes 1 to 4 below were applied on the owner's go-ahead and published.
 
 7. **About page: new descriptions for the three pillars** (Community, Culture, Connection).
    Where: `values` in `src/pages/about.astro`.
-   **Waiting on:** the new text from the owner.
+   Text from the owner (23 Nov, from the "Our Three Pillars" card), to use word for word:
+   - **Community:** A home for regulars, one-timers, thinkers, dreamers, and creators to meet,
+     learn and build together.
+   - **Culture:** A space that celebrates food, music, art, diverse talent, different thinking
+     and stories from around the world.
+   - **Connection:** We amplify voices, actively listen and build bridges between people,
+     brands and ideas.
+   The card also has a heading, "Our Three Pillars", and the line "A Place For People And
+   Ideas". The section has no heading on the site today.
+   **Open question:** add that heading and line above the pillars, or keep the text only?
 
 8. **Newsletter sign-up link on the homepage and the About page.**
    Where: `src/pages/index.astro`, `src/pages/about.astro`; store the link once in
