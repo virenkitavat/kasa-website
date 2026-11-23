@@ -80,5 +80,12 @@ Changes 1 to 4 below were applied on the owner's go-ahead and published.
    Placement to decide: the homepage or another page. Claude's proposal: on the homepage,
    replacing the small "Brands we've hosted" logo strip in the proof section, which is the
    same idea and is currently hidden until real logos exist (`src/data/proof.ts`, `logos`).
-   **Waiting on:** placement decision, client logo files (SVG or PNG on a transparent
-   background is best) with the brand names, and confirmation Kasa may show each brand.
+   Logo files received 23 Nov, saved in `public/images/clients/` (not yet used on the site):
+   - `chitchat-club-london.png` (ChitChat Club London)
+   - `art-with-eesha.webp` (Art with Eesha)
+   - `coffee-culture.webp` (Coffee Culture)
+   - `awaan.png` (Awaan)
+   - `the-thrivewell-hub.png` (The ThriveWell Hub)
+   All five are white on a transparent background, so the section needs a dark background
+   (the site's dark green) for them to show.
+   **Waiting on:** placement decision, and confirmation Kasa may show each brand.
