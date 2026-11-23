@@ -40,3 +40,35 @@ Changes 1 to 4 below were applied on the owner's go-ahead and published.
    system on this page later (owner, 18 Nov).
    Proposed (owner to confirm when applying): make Book direct the main button, with
    "Send an enquiry" and the email as the alternatives; open Occasia in a new tab.
+
+## Pending (noted 23 Nov 2026, not applied)
+
+5. **Menu: replace with the new menu.** Owner will provide the new menu.
+   Where: `src/data/menu.ts` (all sections, items and prices). Check the hourly package
+   wording and the matcha/coffee notes still match the new menu.
+   **Waiting on:** the new menu from the owner.
+
+6. **Menu page: add an "About our coffee" section above "About our matcha".**
+   Where: `src/pages/menu.astro`, a new band directly before the matcha band, in the same
+   style (photo placeholder beside a heading and short text). Mirror the matcha section's
+   layout, with the photo on the opposite side so the two don't look identical.
+   **Waiting on:** coffee details from the owner (origin, roaster, what makes it special).
+   The current menu only says "Sweet, balanced and complex, from Brazil"; Claude can draft
+   from that if the owner prefers.
+
+7. **About page: new descriptions for the three pillars** (Community, Culture, Connection).
+   Where: `values` in `src/pages/about.astro`.
+   **Waiting on:** the new text from the owner.
+
+8. **Newsletter sign-up link on the homepage and the About page.**
+   Where: `src/pages/index.astro`, `src/pages/about.astro`; store the link once in
+   `src/data/site.ts` so both pages (and later the footer) use the same address.
+   **Waiting on:** the sign-up link (e.g. a Mailchimp, Substack or Klaviyo sign-up page),
+   and where on each page it should sit.
+
+9. **"Join our community" section: a wall of client logos ("wall of fame").**
+   Placement to decide: the homepage or another page. Claude's proposal: on the homepage,
+   replacing the small "Brands we've hosted" logo strip in the proof section, which is the
+   same idea and is currently hidden until real logos exist (`src/data/proof.ts`, `logos`).
+   **Waiting on:** placement decision, client logo files (SVG or PNG on a transparent
+   background is best) with the brand names, and confirmation Kasa may show each brand.
