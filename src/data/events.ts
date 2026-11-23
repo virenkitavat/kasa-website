@@ -53,7 +53,7 @@ export const faqs = [
   },
   {
     q: 'How is an hourly booking priced?',
-    a: 'Per guest. Packages cover the first 2 hours, from £6 a guest for the space to £22.50 with a drink, sandwich and cookie. Each extra hour is £3 per guest. 2 hours is the minimum.',
+    a: 'Per guest. Packages cover the first 2 hours, from £6 a guest for the space to £22.50 with a drink, sandwich and blondie. Each extra hour is £3 per guest. 2 hours is the minimum.',
   },
   {
     q: 'What can I add to a semi-private or fully private booking?',

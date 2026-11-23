@@ -1,0 +1,36 @@
+---
+import { clients } from '../data/proof';
+---
+<section class="band band--ink community" id="community">
+  <div class="wrap">
+    <div class="band-head">
+      <h2 class="t-xl rise">Join our community</h2>
+      <div>
+        <p class="lede">The brands and communities who already call Kasa home.</p>
+        <p style="margin-top:1.5rem"><a class="btn btn--light" href="/contact?type=community">Host your community here</a></p>
+      </div>
+    </div>
+    <ul class="wall">
+      {clients.map((c) => (
+        <li>
+          <figure>
+            <img src={`/images/clients/site/${c.file}`} alt={c.name} width={c.w} height={c.h} loading="lazy" decoding="async" />
+            <figcaption>{c.name}</figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style is:global>
+  .community h2 { color: var(--bg); }
+  .community .lede { color: color-mix(in srgb, var(--bg) 85%, transparent); }
+  .wall { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid rgba(242, 238, 234, 0.18); border-left: 1px solid rgba(242, 238, 234, 0.18); }
+  @media (min-width: 48rem) { .wall { grid-template-columns: repeat(4, 1fr); } }
+  .wall li { border-right: 1px solid rgba(242, 238, 234, 0.18); border-bottom: 1px solid rgba(242, 238, 234, 0.18); }
+  .wall figure { display: grid; grid-template-rows: 1fr auto; place-items: center; gap: 0.75rem; margin: 0; aspect-ratio: 1 / 1; padding: clamp(1rem, 3vw, 2rem) clamp(0.75rem, 2vw, 1.5rem) clamp(0.75rem, 1.5vw, 1rem); }
+  .wall img { width: auto; height: auto; max-width: 78%; max-height: clamp(4.5rem, 12vw, 9rem); object-fit: contain; transition: transform 0.5s var(--ease); }
+  .wall li:hover img { transform: scale(1.05); }
+  .wall figcaption { font-family: var(--label); font-size: 0.875rem; letter-spacing: 0.04em; color: var(--sage); text-align: center; }
+</style>

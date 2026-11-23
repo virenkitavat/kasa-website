@@ -3,12 +3,14 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Placeholder from '../components/Placeholder.astro';
 import Closing from '../components/Closing.astro';
-import { menu } from '../data/menu';
+import { menu, tagNames, type Tag } from '../data/menu';
 import { formatPrice } from '../data/pricing';
 const money = (n: number) => '£' + n.toFixed(2);
+const groups = (['Drinks', 'Food'] as const).map((g) => ({ name: g, sections: menu.filter((s) => s.group === g) }));
+const usedTags = (Object.keys(tagNames) as Tag[]).filter((t) => menu.some((s) => s.items.some((i) => i.tags?.includes(t))));
 ---
-<Base title="Menu" description="Speciality coffee, ceremonial matcha from Uji, focaccia sandwiches and pastries baked fresh at Kasa Café, Fitzrovia.">
-  <PageHero title="The Kasa menu" lede="Speciality coffee, ceremonial matcha, hot focaccia sandwiches and pastries baked fresh each day. All of it can be served at your event." />
+<Base title="Menu" description="Speciality coffee, ceremonial matcha from Uji, whole-leaf teas, artisan sandwiches, pastries and blondies at Kasa Café, Fitzrovia.">
+  <PageHero title="The Kasa menu" lede="Speciality coffee, ceremonial matcha and whole-leaf teas, with artisan sandwiches, pastries and blondies. All of it can be served at your event." />
 
   <nav class="menu-nav" aria-label="Menu sections">
     <div class="wrap">
@@ -19,27 +21,53 @@ const money = (n: number) => '£' + n.toFixed(2);
   </nav>
 
   <section class="band band--tight">
-    <div class="wrap menu-cols">
-      {menu.map((s) => (
-        <section class="menu-sec" id={s.id}>
-          <h2 class="t-lg">{s.name}</h2>
-          {s.note && <p class="menu-sec__note">{s.note}</p>}
-          <ul>
-            {s.items.map((it) => (
-              <li>
-                <span class="menu-item__name">{it.names.join(', ')}{it.detail && <small>{it.detail}</small>}</span>
-                <span class="price">{money(it.price)}</span>
-              </li>
+    <div class="wrap">
+      {groups.map((g) => (
+        <div class="menu-group">
+          <h2 class="menu-group__title">{g.name}</h2>
+          <div class="menu-cols">
+            {g.sections.map((s) => (
+              <section class="menu-sec" id={s.id}>
+                <h3 class="t-lg">{s.name}</h3>
+                {s.note && <p class="menu-sec__note">{s.note}</p>}
+                <ul>
+                  {s.items.map((it) => (
+                    <li>
+                      <span class="menu-item__name">
+                        {it.names.join(', ')}
+                        {it.tags?.map((t) => <abbr class:list={['diet', t === 'NEW' && 'diet--new']} title={tagNames[t]}>{t}</abbr>)}
+                        {it.detail && <small>{it.detail}</small>}
+                      </span>
+                      <span class="price">{money(it.price)}</span>
+                    </li>
+                  ))}
+                </ul>
+                {s.footnote && <p class="menu-sec__foot">{s.footnote}</p>}
+              </section>
             ))}
-          </ul>
-          {s.footnote && <p class="menu-sec__foot">{s.footnote}</p>}
-        </section>
+          </div>
+        </div>
       ))}
+      <ul class="diet-key" aria-label="Dietary key">
+        {usedTags.filter((t) => t !== 'NEW').map((t) => <li><abbr class="diet" title={tagNames[t]}>{t}</abbr> {tagNames[t]}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- PLACEHOLDER TEXT: the owner will replace this coffee description. -->
+  <section class="band band--cream">
+    <div class="wrap feature feature--flip">
+      <Placeholder label="Coffee being poured, or the V60" size="1200 × 1500" shape="arch" tone="brown" ratio="4 / 5" />
+      <div>
+        <h2 class="t-xl rise">About our coffee</h2>
+        <p class="lede" style="margin-top:1.75rem">Our speciality coffee comes from Brazil: sweet, balanced and complex.</p>
+        <p>We pull it as espresso for everything from a piccolo to a Spanish latte, and brew it by hand as a V60 pour over when you want to taste it on its own.</p>
+      </div>
     </div>
   </section>
 
   <section class="band band--mist">
-    <div class="wrap matcha">
+    <div class="wrap feature">
       <Placeholder label="Matcha being poured" size="1200 × 1200" shape="circle" tone="sage" ratio="1 / 1" />
       <div>
         <h2 class="t-xl rise">About our matcha</h2>
@@ -53,7 +81,7 @@ const money = (n: number) => '£' + n.toFixed(2);
     <div class="wrap band-head" style="margin-bottom:0">
       <h2 class="t-xl rise">On the menu at your event</h2>
       <div>
-        <p class="lede">Hourly packages start at {formatPrice(6)} a guest and can include a drink, a pastry, a focaccia sandwich and a cookie. With semi-private and fully private hire, add anything on this page at menu prices. For platters and catering, order at least 5 days ahead.</p>
+        <p class="lede">Hourly packages start at {formatPrice(6)} a guest and can include a drink, a pastry, a sandwich and a blondie. With semi-private and fully private hire, add anything on this page at menu prices. For platters and catering, order at least 5 days ahead.</p>
         <div class="btn-row" style="margin-top:1.5rem">
           <a class="btn btn--primary" href="/#pricing">See event prices</a>
           <a class="btn" href="/contact">Ask about catering</a>
@@ -70,16 +98,27 @@ const money = (n: number) => '£' + n.toFixed(2);
   .menu-nav .chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
   .menu-nav .chips::-webkit-scrollbar { display: none; }
   .menu-nav .chip { text-decoration: none; white-space: nowrap; min-height: 2.5rem; }
+  .menu-group + .menu-group { margin-top: clamp(4rem, 9vw, 7rem); }
+  .menu-group__title { font-size: var(--t-xl); line-height: 0.9; font-style: italic; color: var(--terracotta-deep); margin-bottom: clamp(2rem, 4vw, 3.5rem); }
   .menu-cols { display: grid; gap: clamp(3rem, 6vw, 5rem) clamp(3rem, 7vw, 7rem); }
   @media (min-width: 64rem) { .menu-cols { grid-template-columns: 1fr 1fr; } }
   .menu-sec { scroll-margin-top: 9.5rem; }
   .menu-sec__note { margin-top: 0.6rem; font-family: var(--display); font-style: italic; font-size: 1.2rem; color: var(--terracotta-deep); }
   .menu-sec ul { margin-top: 1.5rem; border-top: 1.5px solid var(--ink); }
   .menu-sec li { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: baseline; padding: 0.9rem 0; border-bottom: 1px solid var(--line); }
+  .diet { display: inline-block; margin-left: 0.4rem; padding: 0.05rem 0.45rem; border-radius: 999px; background: var(--sage); color: var(--ink); font-family: var(--label); font-size: 0.75rem; letter-spacing: 0.04em; text-decoration: none; vertical-align: 0.15em; cursor: help; }
+  .diet--new { background: var(--terracotta); }
+  .diet-key { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: clamp(2.5rem, 5vw, 4rem); padding-top: 1.25rem; border-top: 1px solid var(--line); font-size: var(--t-small); color: var(--ink-soft); }
+  .diet-key .diet { margin: 0 0.25rem 0 0; }
   .menu-item__name small { display: block; margin-top: 0.15rem; font-size: var(--t-small); color: var(--ink-soft); }
   .menu-sec .price { font-size: 1.3rem; color: var(--terracotta-deep); }
   .menu-sec__foot { margin-top: 1rem; font-size: var(--t-small); color: var(--ink-soft); }
-  .matcha { display: grid; gap: 2.5rem; align-items: center; }
-  .matcha .ph { max-width: 24rem; }
-  @media (min-width: 64rem) { .matcha { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 6rem; } .matcha .ph { max-width: none; } }
+  .feature { display: grid; gap: 2.5rem; align-items: center; }
+  .feature .ph { max-width: 24rem; }
+  @media (min-width: 64rem) {
+    .feature { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 6rem; }
+    .feature .ph { max-width: none; }
+    .feature--flip { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); }
+    .feature--flip .ph { order: 2; }
+  }
 </style>

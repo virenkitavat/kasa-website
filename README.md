@@ -17,11 +17,11 @@ Everything you are likely to edit is in `src/data/`:
 
 | File | What it holds |
 |---|---|
-| `site.ts` | Address, email, Instagram, opening hours |
+| `site.ts` | Address, email, Instagram, opening hours, newsletter link |
 | `pricing.ts` | Every price. The pricing section and the estimator both read from here |
-| `menu.ts` | The café menu |
+| `menu.ts` | The café menu, including dietary tags (VG, PB, H, LG, SF, NEW) |
 | `events.ts` | Areas of the space, event types, brand collaborations, booking steps, FAQs |
-| `proof.ts` | Testimonials, brand logos and past events |
+| `proof.ts` | Client logos on the "Join our community" wall, testimonials and past events |
 
 ## Add your photos, video and logo
 
@@ -31,7 +31,14 @@ with `<img src="/images/your-file.jpg" alt="Describe the photo" />`.
 
 The logo is the text "kasa café" in `src/layouts/Base.astro` (search for `LOGO`).
 
-## Testimonials, logos and past events
+## Client logos
+
+The "Join our community" wall on the homepage lists the brands in `src/data/proof.ts`.
+Original logo files are in `public/images/clients/`; the site uses trimmed, smaller copies
+in `public/images/clients/site/`. To add a brand, put a trimmed logo (light artwork on a
+transparent background, as the wall is dark green) in that folder and add a line to `clients`.
+
+## Testimonials and past events
 
 These show as placeholders while you preview, and are hidden on the live site.
 When you have real ones, add them in `src/data/proof.ts` and set `ready: true`.

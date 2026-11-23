@@ -1,0 +1,21 @@
+---
+import { site } from '../data/site';
+interface Props { tone?: 'mist' | 'cream' | 'paper'; }
+const { tone = 'mist' } = Astro.props;
+---
+<section class:list={['band', 'band--tight', `band--${tone}`, 'newsletter']}>
+  <div class="wrap newsletter__in">
+    <div>
+      <h2 class="t-lg rise">Hear about events first</h2>
+      <p class="lede">Upcoming events and news from the café, in your inbox.</p>
+    </div>
+    <a class="btn btn--ink" href={site.newsletter} target="_blank" rel="noopener">Subscribe to our newsletter<span class="sr"> (opens in a new tab)</span></a>
+  </div>
+</section>
+
+<style is:global>
+  .newsletter__in { display: grid; gap: 1.5rem; align-items: end; }
+  .newsletter .lede { margin-top: 1rem; }
+  .newsletter .btn { justify-self: start; }
+  @media (min-width: 48rem) { .newsletter__in { grid-template-columns: 1fr auto; gap: 3rem; } }
+</style>

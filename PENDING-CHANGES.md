@@ -41,7 +41,9 @@ Changes 1 to 4 below were applied on the owner's go-ahead and published.
    Proposed (owner to confirm when applying): make Book direct the main button, with
    "Send an enquiry" and the email as the alternatives; open Occasia in a new tab.
 
-## Pending (noted 23 Nov 2026, not applied)
+## Applied 23 Nov 2026
+
+Changes 5 to 9 below were applied together on the owner's go-ahead and published.
 
 5. **Menu: replace with the new menu.** Owner will provide the new menu.
    Where: `src/data/menu.ts` (all sections, items and prices). Check the hourly package

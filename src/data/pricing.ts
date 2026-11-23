@@ -15,7 +15,7 @@ export const hourly = {
     { price: 10.5, includes: 'Space and a drink' },
     { price: 12.5, includes: 'Space, a drink and a pastry', detail: 'Pick any three pastries from the menu for your group.' },
     { price: 18.5, includes: 'Space, a drink and a sandwich' },
-    { price: 22.5, includes: 'Space, a drink, a sandwich and a homemade cookie' },
+    { price: 22.5, includes: 'Space, a drink, a sandwich and a blondie' },
   ],
 };
 

@@ -11,10 +11,19 @@ export const testimonials = {
   ],
 };
 
-export const logos = {
-  ready: false,
-  items: ['Brand logo', 'Brand logo', 'Brand logo', 'Brand logo', 'Brand logo', 'Brand logo'],
-};
+// Brands and communities shown on the homepage "Join our community" wall.
+// Originals are in public/images/clients/; the site uses the trimmed copies in
+// public/images/clients/site/. Permission to show all of these: confirmed 23 Nov 2026.
+export const clients = [
+  { name: 'ChitChat Club London', file: 'chitchat-club-london.webp', w: 320, h: 367 },
+  { name: 'Art with Eesha', file: 'art-with-eesha.webp', w: 595, h: 640 },
+  { name: 'Coffee Culture', file: 'coffee-culture.webp', w: 640, h: 421 },
+  { name: 'Awaan', file: 'awaan.webp', w: 592, h: 215 },
+  { name: 'The ThriveWell Hub', file: 'the-thrivewell-hub.webp', w: 640, h: 385 },
+  { name: 'Her Aura', file: 'her-aura.webp', w: 640, h: 364 },
+  { name: 'Matcha Mixers', file: 'matcha-mixers.webp', w: 640, h: 337 },
+  { name: 'Stickers & Scribbles', file: 'stickers-and-scribbles.webp', w: 640, h: 634 },
+];
 
 export const pastEvents = {
   ready: false,

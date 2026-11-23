@@ -3,10 +3,11 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Placeholder from '../components/Placeholder.astro';
 import Closing from '../components/Closing.astro';
+import Newsletter from '../components/Newsletter.astro';
 const values = [
-  { name: 'Community', text: 'Regulars know each other here. Run clubs finish at our door and book clubs take over the sofas.' },
-  { name: 'Culture', text: 'Supper clubs, DJ sets, workshops and pop-ups. The room changes with whoever is hosting.' },
-  { name: 'Connection', text: 'Every guest is welcomed like family, whether they came for a flat white or a fiftieth.' },
+  { name: 'Community', text: 'A home for regulars, one-timers, thinkers, dreamers, and creators to meet, learn and build together.' },
+  { name: 'Culture', text: 'A space that celebrates food, music, art, diverse talent, different thinking and stories from around the world.' },
+  { name: 'Connection', text: 'We amplify voices, actively listen and build bridges between people, brands and ideas.' },
 ];
 ---
 <Base title="About us" description="Kasa Café is a home away from home in the heart of Fitzrovia: a place for community, culture and connection.">
@@ -35,6 +36,8 @@ const values = [
       </ul>
     </div>
   </section>
+
+  <Newsletter tone="cream" />
 
   <section class="band">
     <div class="wrap">

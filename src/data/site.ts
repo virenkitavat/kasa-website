@@ -17,6 +17,7 @@ export const site = {
     handle: '@kasacafelondon',
     url: 'https://www.instagram.com/kasacafelondon',
   },
+  newsletter: 'https://kasacafelondon.beehiiv.com/',
   capacity: { seated: 30, standing: 50 },
   // Café opening hours.
   hours: [
