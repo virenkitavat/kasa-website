@@ -85,9 +85,11 @@ Changes 1 to 4 below were applied on the owner's go-ahead and published.
    "focaccia"), Classic Caprese is £7.00 (was £6.50), the pastry and cake lists are new, and
    cakes are replaced by cookies & blondies. Also update the menu page's intro and event line,
    which mention "hot focaccia sandwiches".
-   **Open question:** the £22.50 hourly package includes "a homemade cookie", but the new menu
-   has no plain cookie (brownies, blondies, a pie bar and a brookie instead). Keep "cookie"
-   in the package, or change it (e.g. "a sweet treat")?
+   £22.50 hourly package: change "a homemade cookie" to "a blondie" (owner, 23 Nov), so it
+   reads "Space, a drink, a sandwich and a blondie". Update everywhere the package is
+   described: `src/data/pricing.ts` (tier text), the estimator's option text in
+   `src/pages/index.astro` ("with a drink, sandwich and cookie"), the hourly FAQ answer in
+   `src/data/events.ts`, and the menu page's event line in `src/pages/menu.astro`.
 
 6. **Menu page: add an "About our coffee" section above "About our matcha".**
    Where: `src/pages/menu.astro`, a new band directly before the matcha band, in the same
