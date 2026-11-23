@@ -65,9 +65,7 @@ Changes 1 to 4 below were applied on the owner's go-ahead and published.
      and stories from around the world.
    - **Connection:** We amplify voices, actively listen and build bridges between people,
      brands and ideas.
-   The card also has a heading, "Our Three Pillars", and the line "A Place For People And
-   Ideas". The section has no heading on the site today.
-   **Open question:** add that heading and line above the pillars, or keep the text only?
+   Swap the descriptions only: no new heading or subtitle (owner, 23 Nov). Ready to apply.
 
 8. **Newsletter sign-up link on the homepage and the About page.**
    Where: `src/pages/index.astro`, `src/pages/about.astro`; store the link once in
