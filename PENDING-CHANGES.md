@@ -95,9 +95,13 @@ Changes 1 to 4 below were applied on the owner's go-ahead and published.
    Where: `src/pages/menu.astro`, a new band directly before the matcha band, in the same
    style (photo placeholder beside a heading and short text). Mirror the matcha section's
    layout, with the photo on the opposite side so the two don't look identical.
-   **Waiting on:** coffee details from the owner (origin, roaster, what makes it special).
-   The current menu only says "Sweet, balanced and complex, from Brazil"; Claude can draft
-   from that if the owner prefers.
+   Use Claude's draft for now; the owner will replace it later (owner, 23 Nov). The draft
+   uses only facts from the menu, so nothing about roaster or farm is invented:
+   - Heading: About our coffee
+   - Lead: Our speciality coffee comes from Brazil: sweet, balanced and complex.
+   - Body: We pull it as espresso for everything from a piccolo to a Spanish latte, and brew
+     it by hand as a V60 pour over when you want to taste it on its own.
+   Mark it in the code as placeholder text for the owner to replace. Ready to apply.
 
 7. **About page: new descriptions for the three pillars** (Community, Culture, Connection).
    Where: `values` in `src/pages/about.astro`.
