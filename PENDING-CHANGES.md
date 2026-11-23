@@ -46,7 +46,48 @@ Changes 1 to 4 below were applied on the owner's go-ahead and published.
 5. **Menu: replace with the new menu.** Owner will provide the new menu.
    Where: `src/data/menu.ts` (all sections, items and prices). Check the hourly package
    wording and the matcha/coffee notes still match the new menu.
-   **Waiting on:** the new menu from the owner.
+   New menu received 23 Nov: `docs/reference/kasa-standard-menu.pdf` (two pages, Drinks and
+   Food). Transcribed below; use it word for word, including the dietary tags.
+   Tags: VG vegan · PB plant based · H halal · LG very low gluten · SF sugar free · NEW.
+
+   **Drinks** (speciality coffee, ceremonial matcha and whole-leaf teas)
+   - Speciality Coffee — *Sweet, balanced & complex, from Brazil*: Espresso · Long Black ·
+     Macchiato £3.50; Americano · Cortado · Piccolo £4.00; Flat White · Cappuccino · Latte
+     £4.50; Cinnamon & Brown Sugar Latte · Pistachio Latte · Spanish Latte £5.00; Mocha £5.00;
+     V60 Pour Over £6.50. +£1: make it a Nutella, White or Pink Chocolate Mocha.
+   - Matcha — *100% organic ceremonial matcha, from Uji, Japan*: Classic £4.50; Agave · Dirty
+     Matcha · White Chocolate £5.00; Blueberry · Honeycomb · Strawberry £5.00; Mango ·
+     Passionfruit · Peach £6.50.
+   - Chai & Chocolate — *Slow-spiced and rich*: Chai Latte · Masala Chai £4.50; Dirty Chai ·
+     Pumpkin Spice Chai £5.50; Classic Hot Chocolate £4.00. +£1: make it a Nutella, White or
+     Pink Hot Chocolate.
+   - Teas & Iced Teas — *Whole leaf, sustainably sourced*: Whole-leaf Tea £3.50 (English
+     Breakfast, Earl Grey, Green, Hibiscus, Jasmine, Lemongrass & Ginger, Peppermint,
+     Chamomile, Decaf English Breakfast); London Fog £4.50; Home-brewed Iced Tea [SF] £4.50
+     (Peach, Mango, Strawberry, Passionfruit, Rose).
+   - Extras: Iced · Large · Syrup £0.50; Decaf · Milk Alternative (Almond, Coconut, Soy &
+     Oatly) £0.30; Extra Espresso Shot £0.60.
+
+   **Food** (artisan sandwiches, pastries & cookies)
+   - Artisan Sandwiches — *Filled with the finest ingredients*: Classic Caprese £7.00 (Italian
+     mozzarella, cherry tomato, fresh basil, oregano); Crispy Tuna [H] £7.50 (tuna, mayo,
+     lettuce, tomato); Mediterranean Garden [VG] £8.00 (aubergine, fresh basil, hummus, cherry
+     tomato); Truffle Ham £8.00 (Italian ham, truffle, ricotta, taleggio cheese); Truffle
+     Turkey [H] [NEW] £8.00 (sliced turkey, truffle, ricotta, taleggio cheese); Turkey
+     Florentine [H] £7.50 (sliced turkey, Italian egg mayo, lettuce, tomato).
+   - Sweet Treats, Pastries: Almond Croissant £3.20; Chocolate Twist £3.50; Croissant [VG]
+     £2.00; Hazelnut Croissant £3.00; Maple Pecan Plait £3.50; Pain au Chocolat [VG] £2.50.
+   - Sweet Treats, Cookies & Blondies: Chocolate Fudge Brownie [PB] [LG] £4.50; Lemon &
+     Pistachio Blondie £4.50; Maple Pecan Pie Bar [PB] £4.50; Morello Cherry Blondie £4.50;
+     Pistachio Crème Brookie £4.50; Tiramisu Blondie £4.50.
+
+   Differences from the current site worth knowing: sandwiches are now "artisan" (no longer
+   "focaccia"), Classic Caprese is £7.00 (was £6.50), the pastry and cake lists are new, and
+   cakes are replaced by cookies & blondies. Also update the menu page's intro and event line,
+   which mention "hot focaccia sandwiches".
+   **Open question:** the £22.50 hourly package includes "a homemade cookie", but the new menu
+   has no plain cookie (brownies, blondies, a pie bar and a brookie instead). Keep "cookie"
+   in the package, or change it (e.g. "a sweet treat")?
 
 6. **Menu page: add an "About our coffee" section above "About our matcha".**
    Where: `src/pages/menu.astro`, a new band directly before the matcha band, in the same
